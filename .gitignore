@@ -1,21 +1,10 @@
-# ignore everything in the root except the "wp-content" directory.
-!wp-content/
-
-# ignore everything in the "wp-content" directory, except:
-# "mu-plugins", "plugins", "themes" directory
-wp-content/*
-!wp-content/mu-plugins/
-!wp-content/plugins/
-!wp-content/themes/
-
-# ignore these plugins
-wp-content/plugins/hello.php
-
-# ignore specific themes
-wp-content/themes/twenty*/
 
 # ignore node dependency directories
 node_modules/
+
+# our release driven folders.
+dist/
+release/
 
 # ignore log files and databases
 *.log
@@ -24,18 +13,16 @@ node_modules/
 *.tar.gz
 *.zip
 
-# and some generic stuff
+# some dotfiles
 .DS_Store
 .sass-cache
 
+# specific files to exclude.
 phpcs.xml
 phpunit.xml
 package-lock.json
 Thumbs.db
 wp-cli.local.yml
-dist
-release
-
 _notes.txt
 
 
