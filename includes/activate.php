@@ -11,6 +11,7 @@ namespace Nexcess\WooMinimumDailyOrders\Activate;
 // Set our aliases.
 use Nexcess\WooMinimumDailyOrders as Core;
 use Nexcess\WooMinimumDailyOrders\Helpers as Helpers;
+use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
 
 /**
  * Our inital setup function when activated.
@@ -25,6 +26,11 @@ function activate() {
 	// Include our action so that we may add to this later.
 	do_action( Core\HOOK_PREFIX . 'activate_process' );
 
+	// Schedule our cron job assuming it isn't there already.
+	if ( ! wp_next_scheduled( Core\ORDER_CHECK_CRON ) ) {
+		Utilities\modify_order_check_cron( false );
+	}
+
 	// And flush our rewrite rules.
 	flush_rewrite_rules();
 }
@@ -37,11 +43,8 @@ register_activation_hook( Core\FILE, __NAMESPACE__ . '\activate' );
  */
 function check_active_woo() {
 
-	// Pull the function check.
-	$maybe_woo  = Helpers\maybe_woo_activated();
-
 	// If we weren't false, we are OK.
-	if ( false !== $maybe_woo ) {
+	if ( false !== class_exists( 'woocommerce' ) ) {
 		return;
 	}
 
@@ -49,5 +52,5 @@ function check_active_woo() {
 	deactivate_plugins( Core\BASE );
 
 	// And display the notice.
-	wp_die( sprintf( __( 'Using the WooCommerce Minimum Daily Orders plugin required that you have WooCommerce installed and activated. <a href="%s">Click here</a> to return to the plugins page.', 'woo-minimum-daily-orders' ), admin_url( '/plugins.php' ) ) );
+	wp_die( sprintf( __( 'Using the WooCommerce Minimum Daily Orders plugin requires that you have WooCommerce installed and activated. <a href="%s">Click here</a> to return to the plugins page.', 'woo-minimum-daily-orders' ), admin_url( '/plugins.php' ) ) );
 }

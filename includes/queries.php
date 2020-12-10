@@ -16,12 +16,12 @@ use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
 /**
  * Get all the orders from the previous day.
  *
- * @param  boolean $return_count  Whether or not to return the count or the IDs.
- * @param  boolean $purge_cache   Optional to purge the cache'd version before looking up.
+ * @param  boolean $return_counts  Whether or not to return the count or the IDs.
+ * @param  boolean $purge_cache    Optional to purge the cache'd version before looking up.
  *
  * @return mixed
  */
-function fetch_previous_day_orders( $return_count = true, $purge_cache = false ) {
+function fetch_previous_day_orders( $return_counts = true, $purge_cache = false ) {
 
 	// Set the key to use in our transient.
 	$ky = Core\TRANSIENT_PREFIX . 'prev_day_orders';
@@ -37,19 +37,15 @@ function fetch_previous_day_orders( $return_count = true, $purge_cache = false )
 	// If we have none, do the things.
 	if ( false === $cached_dataset ) {
 
-		// Set the two timestamps we need.
-		// First set today as a formatted date.
-		$setup_today_format = date( 'Y-m-d' );
+		// Get the today timestamp.
+		$define_today_stamp = Helpers\get_today_timestamp();
 
-		// Then flip it back to converted back to a stamp.
-		$define_today_stamp = strtotime( $setup_today_format . ' 00:00:00' );
+		// Subtract a day from today to set our starting.
 		$define_start_stamp = absint( $define_today_stamp ) - DAY_IN_SECONDS;
 
 		// Set the args for a specific lookup.
 		$setup_single_args  = array(
 			'limit'        => -1,
-			'orderby'      => 'date',
-			'order'        => 'ASC',
 			'type'         => 'shop_order',
 			'return'       => 'ids',
 			'status'       => array( 'wc-completed' ),
@@ -80,5 +76,5 @@ function fetch_previous_day_orders( $return_count = true, $purge_cache = false )
 	}
 
 	// Return the entire dataset or just the counts.
-	return false !== $return_count ? $cached_dataset : count( $cached_dataset );
+	return false !== $return_counts ? $cached_dataset : count( $cached_dataset );
 }

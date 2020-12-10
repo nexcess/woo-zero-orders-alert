@@ -49,6 +49,9 @@ define( __NAMESPACE__ . '\OPTION_PREFIX', 'woo_nx_mdo_setting_' );
 // And define our menu slug.
 define( __NAMESPACE__ . '\MENU_SLUG', 'mdo-settings' );
 
+// Set our cron function name constants.
+define( __NAMESPACE__ . '\ORDER_CHECK_CRON', 'woo_mdo_check_orders' );
+
 // Now we handle all the various file loading.
 nx_woo_minimum_daily_orders_file_load();
 /**
@@ -65,19 +68,11 @@ function nx_woo_minimum_daily_orders_file_load() {
 	// Load the general query functions.
 	require_once __DIR__ . '/includes/queries.php';
 
-	// Load up our WooCommerce stuff.
+	// Load up our admin and WooCommerce settings stuff.
+	require_once __DIR__ . '/includes/admin/setup.php';
+	require_once __DIR__ . '/includes/admin/config.php';
 	require_once __DIR__ . '/includes/admin/settings.php';
-	/*
-	// Load the admin specific files.
-	if ( is_admin() ) {
-		require_once __DIR__ . '/includes/admin/admin-assets.php';
-		require_once __DIR__ . '/includes/admin/admin-setup.php';
-		require_once __DIR__ . '/includes/admin/admin-pages.php';
-		require_once __DIR__ . '/includes/admin/admin-display.php';
-		require_once __DIR__ . '/includes/admin/menu-items.php';
-		require_once __DIR__ . '/includes/admin/admin-notices.php';
-	}
-	*/
+	require_once __DIR__ . '/includes/admin/cron-tasks.php';
 
 	// Load the triggered file loads.
 	require_once __DIR__ . '/includes/activate.php';

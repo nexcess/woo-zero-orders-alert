@@ -13,26 +13,11 @@ use Nexcess\WooMinimumDailyOrders as Core;
 use Nexcess\WooMinimumDailyOrders\Helpers as Helpers;
 use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
 
-// And pull in any other namespaces.
-use WP_Error;
-
 /**
  * Start our engines.
  */
-add_action( 'woo_nx_mdo_activate_process', __NAMESPACE__ . '\set_initial_options' );
 add_filter( 'woocommerce_get_sections_products', __NAMESPACE__ . '\add_settings_section' );
 add_filter( 'woocommerce_get_settings_products', __NAMESPACE__ . '\load_settings_fields', 10, 2 );
-
-/**
- * Set our initial options in the DB at activation.
- *
- * @return void
- */
-function set_initial_options() {
-	update_option( Core\OPTION_PREFIX . 'min_val', 5, 'no' );
-	update_option( Core\OPTION_PREFIX . 'alert_email', 'yes', 'no' );
-	update_option( Core\OPTION_PREFIX . 'alert_other', 'no', 'no' );
-}
 
 /**
  * Add our new settings section for display later.
