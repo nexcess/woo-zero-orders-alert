@@ -22,27 +22,55 @@ function get_user_cap() {
 }
 
 /**
- * Take our existing cron job and update or remove the schedule.
+ * Get the email address we wanna use for our alert.
  *
- * @param  boolean $clear      Whether to remove the existing one.
- * @param  string  $frequency  The new frequency we wanna use.
- *
- * @return void
+ * @return string
  */
-function modify_order_check_cron( $clear = true, $frequency = 'sixhrs' ) {
+function get_email_address_for_alert() {
 
-	// Pull in the existing one and remove it.
-	if ( ! empty( $clear ) ) {
+	// Pull the primary email for now.
+	$default_email  = get_option( 'admin_email' );
 
-		// Grab the next scheduled stamp.
-		$timestamp  = wp_next_scheduled( Core\ORDER_CHECK_CRON );
+	// Return it filtered.
+	return apply_filters( Core\HOOK_PREFIX . 'alert_email_address', $default_email );
+}
 
-		// Remove it from the schedule.
-		wp_unschedule_event( $timestamp, Core\ORDER_CHECK_CRON );
+/**
+ * Get our section settings link.
+ *
+ * @return string
+ */
+function get_woo_section_settings_link() {
+
+	// Bail if we aren't on the admin side.
+	if ( ! is_admin() ) {
+		return false;
 	}
 
-	// Now schedule our new one, assuming we passed a new frequency.
-	if ( ! empty( $frequency ) ) {
-		wp_schedule_event( current_time( 'timestamp' ), sanitize_text_field( $frequency ), Core\ORDER_CHECK_CRON );
-	}
+	// Set the args.
+	$set_link_args  = array(
+		'page'    => 'wc-settings',
+		'tab'     => 'products',
+		'section' => Core\MENU_SLUG,
+	);
+
+	// Return the link with our args.
+	return add_query_arg( $set_link_args, admin_url( 'admin.php' ) );
+}
+
+/**
+ * Get the timestamp of today at midnight.
+ *
+ * @return integer
+ */
+function get_today_timestamp() {
+
+	// Set today as a formatted date.
+	$setup_today_format = date( 'Y-m-d' );
+
+	// Then add the zero'd time portion, and flip it back to a timestamp.
+	$define_today_stamp = strtotime( $setup_today_format . ' 00:00:00' );
+
+	// Return it as an integer.
+	return absint( $define_today_stamp );
 }

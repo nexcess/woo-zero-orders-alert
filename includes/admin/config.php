@@ -47,7 +47,7 @@ function add_quick_link( $links, $file ) {
 	}
 
 	// Fetch our setting link.
-	$settings_page  = Helpers\get_woo_section_settings_link();
+	$settings_page  = Utilities\get_woo_section_settings_link();
 
 	// Now create the link markup.
 	$settings_link  = '<a href="' . esc_url( $settings_page ) . ' ">' . esc_html__( 'Settings', 'woo-minimum-order-alerts' ) . '</a>';

@@ -1,17 +1,40 @@
 <?php
 /**
- * Our utility functions to use across the plugin.
+ * The queries and comparisons for our orders.
  *
  * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\Queries;
+namespace Nexcess\WooMinimumOrderAlerts\Process\OrderChecks;
 
 // Set our aliases.
 use Nexcess\WooMinimumOrderAlerts as Core;
 use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
 use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
+
+/**
+ * Run the comparison of the orders.
+ *
+ * @return boolean
+ */
+function process_order_comparison() {
+
+	// First we fetch the order count.
+	$get_order_nums = fetch_previous_day_orders();
+
+	// If we had no orders, it does not
+	// matter what the minimum is.
+	if ( empty( $get_order_nums ) ) {
+		return false;
+	}
+
+	// Get the minimum value we stored.
+	$get_min_value  = get_option( Core\OPTION_PREFIX . 'min_val', 5 );
+
+	// Do our check and return a boolean.
+	return absint( $get_order_nums ) >= absint( $get_min_value ) ? true : false;
+}
 
 /**
  * Get all the orders from the previous day.
@@ -38,7 +61,7 @@ function fetch_previous_day_orders( $return_counts = true, $purge_cache = false 
 	if ( false === $cached_dataset ) {
 
 		// Get the today timestamp.
-		$define_today_stamp = Helpers\get_today_timestamp();
+		$define_today_stamp = Utilities\get_today_timestamp();
 
 		// Subtract a day from today to set our starting.
 		$define_start_stamp = absint( $define_today_stamp ) - DAY_IN_SECONDS;
@@ -69,7 +92,7 @@ function fetch_previous_day_orders( $return_counts = true, $purge_cache = false 
 		}
 
 		// Set our transient with our data.
-		set_transient( $ky, $fetch_batch_orders, ( MINUTE_IN_SECONDS * 10 ) );
+		set_transient( $ky, $fetch_batch_orders, HOUR_IN_SECONDS );
 
 		// And change the variable to do the things.
 		$cached_dataset = $fetch_batch_orders;

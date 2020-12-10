@@ -10,8 +10,7 @@ namespace Nexcess\WooMinimumOrderAlerts\Activate;
 
 // Set our aliases.
 use Nexcess\WooMinimumOrderAlerts as Core;
-use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
-use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts\Process\CronTasks as CronTasks;
 
 /**
  * Our inital setup function when activated.
@@ -28,7 +27,7 @@ function activate() {
 
 	// Schedule our cron job assuming it isn't there already.
 	if ( ! wp_next_scheduled( Core\ORDER_CHECK_CRON ) ) {
-		Utilities\modify_order_check_cron( false );
+		CronTasks\modify_order_check_cron( false );
 	}
 
 	// And flush our rewrite rules.

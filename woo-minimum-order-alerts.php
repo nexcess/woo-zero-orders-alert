@@ -54,6 +54,7 @@ define( __NAMESPACE__ . '\ORDER_CHECK_CRON', 'wc_min_orders_check_prev' );
 
 // Now we handle all the various file loading.
 nx_woo_minimum_order_alerts_file_load();
+
 /**
  * Actually load our files.
  *
@@ -65,10 +66,9 @@ function nx_woo_minimum_order_alerts_file_load() {
 	require_once __DIR__ . '/includes/helpers.php';
 	require_once __DIR__ . '/includes/utilities.php';
 
-	// Load the general query functions.
-	require_once __DIR__ . '/includes/queries.php';
-
 	// Pull in the processing parts.
+	require_once __DIR__ . '/includes/process/notifications.php';
+	require_once __DIR__ . '/includes/process/order-checks.php';
 	require_once __DIR__ . '/includes/process/cron-tasks.php';
 
 	// Load up our admin and WooCommerce settings stuff.

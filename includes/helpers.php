@@ -13,55 +13,53 @@ use Nexcess\WooMinimumOrderAlerts as Core;
 use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
 
 /**
- * Get the email address we wanna use for our alert.
+ * Check our timestamp against the last stored.
  *
- * @return string
+ * @return boolean
  */
-function get_email_address_for_alert() {
+function maybe_last_checked_passed() {
 
-	// Pull the primary email for now.
-	$default_email  = get_option( 'admin_email' );
+	// Get the last checked.
+	$get_last_checked   = get_option( Core\OPTION_PREFIX . 'last_checked', false );
 
-	// Return it filtered.
-	return apply_filters( Core\HOOK_PREFIX . 'alert_email_address', $default_email );
+	// If we don't have a stamp, assume it's passed.
+	if ( empty( $get_last_checked ) ) {
+		return true;
+	}
+
+	// Now add a day.
+	$set_check_compare = absint( $get_last_checked ) + DAY_IN_SECONDS;
+
+	// Get the right now.
+	$get_current_stamp  = current_time( 'timestamp', 1 );
+
+	// Return the result.
+	return absint( $get_current_stamp ) >= absint( $set_check_compare ) ? true : false;
 }
 
 /**
- * Get our section settings link.
+ * Check to see what alert configurations we have.
  *
- * @return string
+ * @return mixed
  */
-function get_woo_section_settings_link() {
+function maybe_alerts_configured() {
 
-	// Bail if we aren't on the admin side.
-	if ( ! is_admin() ) {
+	// Grab the two known alert types.
+	$check_alert_email  = get_option( Core\OPTION_PREFIX . 'alert_email', false );
+	$check_alert_other  = get_option( Core\OPTION_PREFIX . 'alert_other', false );
+
+	// Now check each one for the "yes" value.
+	$maybe_alert_email  = ! empty( $check_alert_email ) && 'yes' === sanitize_text_field( $check_alert_email ) ? 'yes' : 'no';
+	$maybe_alert_other  = ! empty( $check_alert_other ) && 'yes' === sanitize_text_field( $check_alert_other ) ? 'yes' : 'no';
+
+	// If both are empty, return false.
+	if ( 'no' === $maybe_alert_email && 'no' === $maybe_alert_other ) {
 		return false;
 	}
 
-	// Set the args.
-	$set_link_args  = array(
-		'page'    => 'wc-settings',
-		'tab'     => 'products',
-		'section' => Core\MENU_SLUG,
+	// Return a basic array of the ones we have.
+	return array(
+		'email' => $maybe_alert_email,
+		'other' => $maybe_alert_other,
 	);
-
-	// Return the link with our args.
-	return add_query_arg( $set_link_args, admin_url( 'admin.php' ) );
-}
-
-/**
- * Get the timestamp of today at midnight.
- *
- * @return integer
- */
-function get_today_timestamp() {
-
-	// Set today as a formatted date.
-	$setup_today_format = date( 'Y-m-d' );
-
-	// Then add the zero'd time portion, and flip it back to a timestamp.
-	$define_today_stamp = strtotime( $setup_today_format . ' 00:00:00' );
-
-	// Return it as an integer.
-	return absint( $define_today_stamp );
 }

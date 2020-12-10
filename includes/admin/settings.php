@@ -22,6 +22,8 @@ add_filter( 'woocommerce_get_settings_products', __NAMESPACE__ . '\load_settings
 /**
  * Add our new settings section for display later.
  *
+ * @param array $sections  The existing sections.
+ *
  * @param array
  */
 function add_settings_section( $sections ) {

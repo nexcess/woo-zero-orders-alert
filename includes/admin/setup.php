@@ -12,6 +12,7 @@ namespace Nexcess\WooMinimumOrderAlerts\Admin\Setup;
 use Nexcess\WooMinimumOrderAlerts as Core;
 use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
 use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts\Process\CronTasks as CronTasks;
 
 /**
  * Start our engines.
@@ -29,11 +30,11 @@ function run_on_activate() {
 
 	// Schedule our cron job assuming it isn't there already.
 	if ( ! wp_next_scheduled( Core\ORDER_CHECK_CRON ) ) {
-		Utilities\modify_order_check_cron( false );
+		CronTasks\modify_order_check_cron( false );
 	}
 
 	// Get the today timestamp.
-	$define_today_stamp = Helpers\get_today_timestamp();
+	$define_today_stamp = Utilities\get_today_timestamp();
 
 	// Set our initial options in the DB.
 	update_option( Core\OPTION_PREFIX . 'last_checked', $define_today_stamp, 'no' );
@@ -50,7 +51,7 @@ function run_on_activate() {
 function run_on_deactivate() {
 
 	// Pull in our scheduled cron and unschedule it.
-	Utilities\modify_order_check_cron( true, false );
+	CronTasks\modify_order_check_cron( true, false );
 
 	// If we want to change options on deactivate, do it here.
 }
@@ -63,7 +64,7 @@ function run_on_deactivate() {
 function run_on_uninstall() {
 
 	// Pull in our scheduled cron and unschedule it.
-	Utilities\modify_order_check_cron( true, false );
+	CronTasks\modify_order_check_cron( true, false );
 
 	// Delete the options we set.
 	delete_option( Core\OPTION_PREFIX . 'last_checked' );
