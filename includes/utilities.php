@@ -60,3 +60,17 @@ function get_today_timestamp() {
 	// Return it as an integer.
 	return absint( $define_today_stamp );
 }
+
+/**
+ * Set the updated timestamp for the next check.
+ *
+ * @return void
+ */
+function set_next_check_stamp() {
+
+	// Get my timestamp for today.
+	$get_today_stamp    = get_today_timestamp();
+
+	// And update my option.
+	update_option( Core\OPTION_PREFIX . 'last_checked', absint( $get_today_stamp ), 'no' );
+}

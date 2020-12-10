@@ -97,4 +97,10 @@ function check_order_compare_via_cron() {
 
 	// Handle any of our notifications.
 	Notifications\process_minimum_orders_alerts();
+
+	// And go set my next stamp.
+	Utilities\set_next_check_stamp();
+
+	// And we are done here.
+	return;
 }
