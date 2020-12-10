@@ -22,20 +22,6 @@ function get_user_cap() {
 }
 
 /**
- * Get the email address we wanna use for our alert.
- *
- * @return string
- */
-function get_email_address_for_alert() {
-
-	// Pull the primary email for now.
-	$default_email  = get_option( 'admin_email' );
-
-	// Return it filtered.
-	return apply_filters( Core\HOOK_PREFIX . 'alert_email_address', $default_email );
-}
-
-/**
  * Get our section settings link.
  *
  * @return string

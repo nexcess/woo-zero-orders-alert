@@ -19,7 +19,7 @@ use  Nexcess\WooMinimumOrderAlerts\Process\Notifications as Notifications;
  * Start our engines.
  */
 add_filter( 'cron_schedules', __NAMESPACE__ . '\add_custom_cron_schedule' );
-add_action( Core\ORDER_CHECK_CRON, __NAMESPACE__ . '\check_order_compare_schedule' );
+add_action( Core\ORDER_CHECK_CRON, __NAMESPACE__ . '\check_order_compare_via_cron' );
 
 /**
  * Add our custom 8 hour cron schedule time.
@@ -76,7 +76,7 @@ function modify_order_check_cron( $clear = true, $frequency = 'eight-hrs' ) {
  *
  * @return void
  */
-function check_order_compare_schedule() {
+function check_order_compare_via_cron() {
 
 	// Run our timestamp comparisons first.
 	$maybe_time_passed  = Helpers\maybe_last_checked_passed();
