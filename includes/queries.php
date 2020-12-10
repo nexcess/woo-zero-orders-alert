@@ -2,16 +2,16 @@
 /**
  * Our utility functions to use across the plugin.
  *
- * @package WooMinimumDailyOrders
+ * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Queries;
+namespace Nexcess\WooMinimumOrderAlerts\Queries;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
-use Nexcess\WooMinimumDailyOrders\Helpers as Helpers;
-use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
+use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
 
 /**
  * Get all the orders from the previous day.

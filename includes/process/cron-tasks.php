@@ -6,36 +6,36 @@
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Admin\Cron;
+namespace Nexcess\WooMinimumOrderAlerts\Process\CronTasks;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
-use Nexcess\WooMinimumDailyOrders\Helpers as Helpers;
-use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
+use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
 
 /**
  * Start our engines.
  */
-add_filter( 'cron_schedules', __NAMESPACE__ . '\add_cron_schedule' );
+add_filter( 'cron_schedules', __NAMESPACE__ . '\add_sixhrs_cron_schedule' );
 add_action( Core\ORDER_CHECK_CRON, __NAMESPACE__ . '\maybe_run_order_check' );
 
 /**
- * Add our custom cron schedule time.
+ * Add our custom 6 hour cron schedule time.
  *
  * @param  array $schedules  The existing array of times.
  *
  * @return void
  *
  */
-function add_cron_schedule( $schedules ) {
+function add_sixhrs_cron_schedule( $schedules ) {
 
-	// Set the 4 hour interval.
+	// Set the 6 hour interval.
 	$set_custom_intval   = HOUR_IN_SECONDS * 6;
 
 	// And set the array.
 	$schedules['sixhrs'] = array(
 		'interval' => absint( $set_custom_intval ),
-		'display'  => __( 'Every 6 Hours' )
+		'display'  => __( 'Every 6 Hours', 'woo-minimum-order-alerts' )
 	);
 
 	// And return the resulting array.

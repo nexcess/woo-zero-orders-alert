@@ -2,14 +2,14 @@
 /**
  * Our uninstall call.
  *
- * @package WooMinimumDailyOrders
+ * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Uninstall;
+namespace Nexcess\WooMinimumOrderAlerts\Uninstall;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
+use Nexcess\WooMinimumOrderAlerts as Core;
 
 /**
  * Delete various options when uninstalling the plugin.

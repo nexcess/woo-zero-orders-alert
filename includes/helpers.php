@@ -2,15 +2,15 @@
 /**
  * Our helper functions to use across the plugin.
  *
- * @package WooMinimumDailyOrders
+ * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Helpers;
+namespace Nexcess\WooMinimumOrderAlerts\Helpers;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
-use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
 
 /**
  * Get the email address we wanna use for our alert.

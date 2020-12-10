@@ -2,16 +2,16 @@
 /**
  * Our activation call.
  *
- * @package WooMinimumDailyOrders
+ * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Activate;
+namespace Nexcess\WooMinimumOrderAlerts\Activate;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
-use Nexcess\WooMinimumDailyOrders\Helpers as Helpers;
-use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
+use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
 
 /**
  * Our inital setup function when activated.
@@ -52,5 +52,5 @@ function check_active_woo() {
 	deactivate_plugins( Core\BASE );
 
 	// And display the notice.
-	wp_die( sprintf( __( 'Using the WooCommerce Minimum Daily Orders plugin requires that you have WooCommerce installed and activated. <a href="%s">Click here</a> to return to the plugins page.', 'woo-minimum-daily-orders' ), admin_url( '/plugins.php' ) ) );
+	wp_die( sprintf( __( 'Using the WooCommerce Minimum Order Alerts plugin requires that you have WooCommerce installed and activated. <a href="%s">Click here</a> to return to the plugins page.', 'woo-minimum-order-alerts' ), admin_url( '/plugins.php' ) ) );
 }

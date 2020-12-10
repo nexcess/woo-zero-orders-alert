@@ -2,16 +2,16 @@
 /**
  * Load our custom settings inside the larger WooCommerce settings API.
  *
- * @package WooMinimumDailyOrders
+ * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Admin\Settings;
+namespace Nexcess\WooMinimumOrderAlerts\Admin\Settings;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
-use Nexcess\WooMinimumDailyOrders\Helpers as Helpers;
-use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
+use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
 
 /**
  * Start our engines.
@@ -28,7 +28,7 @@ function add_settings_section( $sections ) {
 
 	// Add our new section, assuming it doesnt exist.
 	if ( ! isset( $sections[ Core\MENU_SLUG ] ) ) {
-		$sections[ Core\MENU_SLUG ] = __( 'Minimum Daily Orders', 'woo-minimum-daily-orders' );
+		$sections[ Core\MENU_SLUG ] = __( 'Minimum Order Alerts', 'woo-minimum-order-alerts' );
 	}
 
 	// And return it.
@@ -55,15 +55,15 @@ function load_settings_fields( $settings, $current_section ) {
 
 		// Add our title.
 		array(
-			'title' => __( 'Minimum Daily Orders', 'woo-minimum-daily-orders' ),
+			'title' => __( 'Minimum Order Alerts', 'woo-minimum-order-alerts' ),
 			'type'  => 'title',
 			'id'    => Core\MENU_SLUG,
 		),
 
 		// Set the input for our number.
 		array(
-			'title'             => __( 'Minimum Order Amount', 'woo-minimum-daily-orders' ),
-			'desc'              => __( 'Set a minimum that matches your expected daily order volume.', 'woo-minimum-daily-orders' ),
+			'title'             => __( 'Minimum Order Amount', 'woo-minimum-order-alerts' ),
+			'desc'              => __( 'Set a minimum that matches your expected daily order volume.', 'woo-minimum-order-alerts' ),
 			'id'                => Core\OPTION_PREFIX . 'min_val',
 			'css'               => 'width:50px;',
 			'default'           => '5',
@@ -78,8 +78,8 @@ function load_settings_fields( $settings, $current_section ) {
 
 		// Add the first alert method.
 		array(
-			'title'         => __( 'Notifications', 'woo-minimum-daily-orders' ),
-			'desc'          => __( 'Send an email when the minimum has not been met', 'woo-minimum-daily-orders' ),
+			'title'         => __( 'Notifications', 'woo-minimum-order-alerts' ),
+			'desc'          => __( 'Send an email when the minimum has not been met', 'woo-minimum-order-alerts' ),
 			'id'            => Core\OPTION_PREFIX . 'alert_email',
 			'default'       => 'yes',
 			'type'          => 'checkbox',
@@ -89,7 +89,7 @@ function load_settings_fields( $settings, $current_section ) {
 
 		// Add the secondary alert method.
 		array(
-			'desc'          => __( 'Send an alert some other way we dont know yet', 'woo-minimum-daily-orders' ),
+			'desc'          => __( 'Send an alert some other way we dont know yet', 'woo-minimum-order-alerts' ),
 			'id'            => Core\OPTION_PREFIX . 'alert_other',
 			'default'       => 'no',
 			'type'          => 'checkbox',

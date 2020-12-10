@@ -2,16 +2,16 @@
 /**
  * Handle our initial admin setup.
  *
- * @package WooMinimumDailyOrders
+ * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Admin\Setup;
+namespace Nexcess\WooMinimumOrderAlerts\Admin\Setup;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
-use Nexcess\WooMinimumDailyOrders\Helpers as Helpers;
-use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
+use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
 
 /**
  * Start our engines.

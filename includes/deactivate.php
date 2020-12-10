@@ -2,14 +2,14 @@
 /**
  * Our deactivation call.
  *
- * @package WooMinimumDailyOrders
+ * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Deactivate;
+namespace Nexcess\WooMinimumOrderAlerts\Deactivate;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
+use Nexcess\WooMinimumOrderAlerts as Core;
 
 /**
  * Delete various options when deactivating the plugin.

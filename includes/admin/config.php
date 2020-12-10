@@ -2,16 +2,16 @@
 /**
  * Do some ongoing admin level configurations.
  *
- * @package WooMinimumDailyOrders
+ * @package WooMinimumOrderAlerts
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumDailyOrders\Admin\Config;
+namespace Nexcess\WooMinimumOrderAlerts\Admin\Config;
 
 // Set our aliases.
-use Nexcess\WooMinimumDailyOrders as Core;
-use Nexcess\WooMinimumDailyOrders\Helpers as Helpers;
-use Nexcess\WooMinimumDailyOrders\Utilities as Utilities;
+use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
+use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
 
 /**
  * Start our engines.
@@ -50,7 +50,7 @@ function add_quick_link( $links, $file ) {
 	$settings_page  = Helpers\get_woo_section_settings_link();
 
 	// Now create the link markup.
-	$settings_link  = '<a href="' . esc_url( $settings_page ) . ' ">' . esc_html__( 'Settings', 'woo-minimum-daily-orders' ) . '</a>';
+	$settings_link  = '<a href="' . esc_url( $settings_page ) . ' ">' . esc_html__( 'Settings', 'woo-minimum-order-alerts' ) . '</a>';
 
 	// Add it to the array.
 	array_unshift( $links, $settings_link );

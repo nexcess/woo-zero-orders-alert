@@ -1,10 +1,10 @@
 {
-  "name": "woo-minimum-daily-orders",
+  "name": "woo-minimum-order-alerts",
   "version": "0.0.1-dev",
   "description": "Notify store owners when minimim daily order targets are missed.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nexcess/woo-minimum-daily-orders.git"
+    "url": "https://github.com/nexcess/woo-minimum-order-alerts.git"
   },
   "author": {
     "name": "Nexcess",

@@ -15,7 +15,7 @@ module.exports = function( grunt ) {
           'includes/**',
           'languages/**',
           'index.php',
-          'woo-minimum-daily-orders.php',
+          'woo-minimum-order-alerts.php',
           'readme.txt',
           'CHANGELOG.md',
           'LICENSE',
@@ -58,7 +58,7 @@ module.exports = function( grunt ) {
     // Process the textdomain.
     addtextdomain: {
       options: {
-        textdomain: 'woo-minimum-daily-orders',
+        textdomain: 'woo-minimum-order-alerts',
       },
       update_all_domains: {
         options: {
@@ -82,8 +82,8 @@ module.exports = function( grunt ) {
         options: {
           domainPath: '/languages',
           exclude: [ '\.git/*', 'bin/*', 'node_modules/*', 'tests/*' ],
-          mainFile: 'woo-minimum-daily-orders.php',
-          potFilename: 'woo-sales-trends-monitor.pot',
+          mainFile: 'woo-minimum-order-alerts.php',
+          potFilename: 'woo-minimum-order-alerts.pot',
           potHeaders: {
             poedit: true,
             'x-poedit-keywordslist': true
