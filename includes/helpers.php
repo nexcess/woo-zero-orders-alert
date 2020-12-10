@@ -44,22 +44,9 @@ function maybe_last_checked_passed() {
  */
 function maybe_alerts_configured() {
 
-	// Grab the two known alert types.
-	$check_alert_email  = get_option( Core\OPTION_PREFIX . 'alert_email', false );
-	$check_alert_other  = get_option( Core\OPTION_PREFIX . 'alert_other', false );
-
-	// Now check each one for the "yes" value.
-	$maybe_alert_email  = ! empty( $check_alert_email ) && 'yes' === sanitize_text_field( $check_alert_email ) ? 'yes' : 'no';
-	$maybe_alert_other  = ! empty( $check_alert_other ) && 'yes' === sanitize_text_field( $check_alert_other ) ? 'yes' : 'no';
-
-	// If both are empty, return false.
-	if ( 'no' === $maybe_alert_email && 'no' === $maybe_alert_other ) {
-		return false;
-	}
+	// Grab the stored.
+	$check_alert_types  = get_option( Core\OPTION_PREFIX . 'alert_types', false );
 
 	// Return a basic array of the ones we have.
-	return array(
-		'email' => $maybe_alert_email,
-		'other' => $maybe_alert_other,
-	);
+	return ! empty( $check_alert_types ) ? $check_alert_types : false;
 }

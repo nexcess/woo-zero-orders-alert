@@ -36,12 +36,7 @@ function process_minimum_orders_alerts() {
 	do_action( Core\HOOK_PREFIX . 'before_alerts_sent' );
 
 	// Now loop and run each known alert type.
-	foreach ( $get_configured_alerts as $alert_type => $alert_flag ) {
-
-		// Only do this for a "yes" value.
-		if ( 'yes' !== sanitize_text_field( $alert_flag ) ) {
-			continue;
-		}
+	foreach ( $get_configured_alerts as $alert_type ) {
 
 		// Now run each known.
 		switch ( sanitize_text_field( $alert_type ) ) {
@@ -57,7 +52,7 @@ function process_minimum_orders_alerts() {
 				break;
 		}
 
-		// Allow a custom one we don't know of yet.
+		// Allow a custom ones we don't know of yet.
 		do_action( Core\HOOK_PREFIX . "send_alert_{$alert_type}" );
 	}
 
