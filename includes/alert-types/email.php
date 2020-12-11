@@ -41,8 +41,11 @@ function send_email_alert() {
  */
 function get_alert_address() {
 
-	// Pull the primary email for now.
-	$default_email  = get_option( 'admin_email' );
+	// Check the Woo filter for email.
+	$maybe_use_woo  = apply_filters( Core\HOOK_PREFIX . 'alert_email_use_woo_from', false );
+
+	// Pull the appropriate email.
+	$default_email  = false !== $maybe_use_woo ? get_option( 'woocommerce_email_from_address' ) : get_option( 'admin_email' );
 
 	// Return it filtered.
 	return apply_filters( Core\HOOK_PREFIX . 'alert_email_address', $default_email );
