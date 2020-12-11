@@ -83,7 +83,7 @@ function registered_alert_types( $return_keys = false ) {
 	// Set the alert types in a key/label pair.
 	$define_alert_types = array(
 		'email' => __( 'Email', 'woo-minimum-order-alerts' ),
-		'other' => __( 'Other', 'woo-minimum-order-alerts' ),
+		'inbox' => __( 'Woo Inbox', 'woo-minimum-order-alerts' ),
 	);
 
 	// Get any possible custom types.

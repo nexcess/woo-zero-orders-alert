@@ -46,8 +46,12 @@ define( __NAMESPACE__ . '\NONCE_PREFIX', 'woo_nxmoa_nonce_' );
 define( __NAMESPACE__ . '\TRANSIENT_PREFIX', 'nx_moa_tr_' );
 define( __NAMESPACE__ . '\OPTION_PREFIX', 'woo_nx_moa_setting_' );
 
-// And define our menu slug.
+// Define our menu slug.
 define( __NAMESPACE__ . '\MENU_SLUG', 'min-order-alerts-settings' );
+
+// Define the parts for the Woo inbox.
+define( __NAMESPACE__ . '\WOO_INBOX_SOURCE', 'nx-min-order-alerts' );
+define( __NAMESPACE__ . '\WOO_INBOX_NOTE_ID', 'min-order-alert' );
 
 // Set our cron function name constants.
 define( __NAMESPACE__ . '\ORDER_CHECK_CRON', 'wc_min_orders_check_prev' );
@@ -73,6 +77,7 @@ function nx_woo_minimum_order_alerts_file_load() {
 
 	// Load our individual alert types.
 	require_once __DIR__ . '/includes/alert-types/email.php';
+	require_once __DIR__ . '/includes/alert-types/inbox.php';
 
 	// Load up our admin and WooCommerce settings stuff.
 	require_once __DIR__ . '/includes/admin/setup.php';

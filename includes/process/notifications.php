@@ -37,7 +37,7 @@ function process_minimum_orders_alerts() {
 	// Now loop and run each known alert type.
 	foreach ( $get_configured_alerts as $alert_type ) {
 
-		// Now run each known.
+		// Now run through each one that we built.
 		switch ( sanitize_text_field( $alert_type ) ) {
 
 			// Run our emailer.
@@ -45,9 +45,9 @@ function process_minimum_orders_alerts() {
 				\Nexcess\WooMinimumOrderAlerts\AlertTypes\Email\send_email_alert();
 				break;
 
-			// This is really an unknown.
-			case 'other' :
-				send_alert_via_other();
+			// Run our Woo inbox.
+			case 'inbox' :
+				\Nexcess\WooMinimumOrderAlerts\AlertTypes\Inbox\send_inbox_alert();
 				break;
 		}
 
@@ -59,14 +59,4 @@ function process_minimum_orders_alerts() {
 	do_action( Core\HOOK_PREFIX . 'after_alerts_sent' );
 
 	// I think this is all we need to do here?
-}
-
-/**
- * Handle our nebulous one.
- *
- * @return void
- */
-function send_alert_via_other() {
-
-	// No idea what this actually looks like.
 }

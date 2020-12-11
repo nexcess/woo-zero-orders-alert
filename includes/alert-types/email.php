@@ -56,7 +56,7 @@ function get_alert_address() {
 function get_alert_subject() {
 
 	// Set up the subject using today's date.
-	$set_subject	= sprintf( __( 'Minimum Order Alert for %s', 'woo-minimum-order-alerts' ), date( 'Y-m-d' ) );
+	$set_subject    = sprintf( __( 'Minimum Order Alert for %s', 'woo-minimum-order-alerts' ), date( 'Y-m-d' ) );
 
 	// Return it filtered.
 	return apply_filters( Core\HOOK_PREFIX . 'alert_email_subject', $set_subject );
