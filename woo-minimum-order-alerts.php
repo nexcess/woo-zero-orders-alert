@@ -70,7 +70,9 @@ function nx_woo_minimum_order_alerts_file_load() {
 	require_once __DIR__ . '/includes/process/notifications.php';
 	require_once __DIR__ . '/includes/process/order-checks.php';
 	require_once __DIR__ . '/includes/process/cron-tasks.php';
-	require_once __DIR__ . '/includes/process/email-build.php';
+
+	// Load our individual alert types.
+	require_once __DIR__ . '/includes/alert-types/email.php';
 
 	// Load up our admin and WooCommerce settings stuff.
 	require_once __DIR__ . '/includes/admin/setup.php';

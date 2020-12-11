@@ -12,7 +12,6 @@ namespace Nexcess\WooMinimumOrderAlerts\Process\Notifications;
 use Nexcess\WooMinimumOrderAlerts as Core;
 use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
 use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
-use Nexcess\WooMinimumOrderAlerts\Process\EmailBuild as EmailBuild;
 
 // And pull in any other namespaces.
 use WP_Error;
@@ -43,7 +42,7 @@ function process_minimum_orders_alerts() {
 
 			// Run our emailer.
 			case 'email' :
-				send_alert_via_email();
+				\Nexcess\WooMinimumOrderAlerts\AlertTypes\Email\send_email_alert();
 				break;
 
 			// This is really an unknown.
@@ -60,29 +59,6 @@ function process_minimum_orders_alerts() {
 	do_action( Core\HOOK_PREFIX . 'after_alerts_sent' );
 
 	// I think this is all we need to do here?
-}
-
-/**
- * Send a generic email that a target was missed.
- *
- * @return void
- */
-function send_alert_via_email() {
-
-	// Get my address.
-	$email_to_addr  = EmailBuild\get_alert_email_address();
-
-	// Pull my subject.
-	$email_subject  = EmailBuild\get_alert_email_subject();
-
-	// And pull the content.
-	$email_content  = EmailBuild\get_alert_email_content();
-
-	// And finally the headers.
-	$email_headers  = EmailBuild\get_alert_email_headers();
-
-	// Now attempt to send the actual email.
-	return wp_mail( $email_to_addr, $email_subject, $email_content, $email_headers );
 }
 
 /**

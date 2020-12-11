@@ -6,19 +6,40 @@
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\Process\EmailBuild;
+namespace Nexcess\WooMinimumOrderAlerts\AlertTypes\Email;
 
 // Set our aliases.
 use Nexcess\WooMinimumOrderAlerts as Core;
-use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
-use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
+
+/**
+ * Send the actual email.
+ *
+ * @return mixed
+ */
+function send_email_alert() {
+
+	// Get my address.
+	$email_to_addr  = get_alert_address();
+
+	// Pull my subject.
+	$email_subject  = get_alert_subject();
+
+	// And pull the content.
+	$email_content  = get_alert_content();
+
+	// And finally the headers.
+	$email_headers  = get_alert_headers();
+
+	// Now attempt to send the actual email.
+	return wp_mail( $email_to_addr, $email_subject, $email_content, $email_headers );
+}
 
 /**
  * Get the email address we wanna use for our alert.
  *
  * @return string
  */
-function get_alert_email_address() {
+function get_alert_address() {
 
 	// Pull the primary email for now.
 	$default_email  = get_option( 'admin_email' );
@@ -32,7 +53,7 @@ function get_alert_email_address() {
  *
  * @return string
  */
-function get_alert_email_subject() {
+function get_alert_subject() {
 
 	// Set up the subject using today's date.
 	$set_subject	= sprintf( __( 'Minimum Order Alert for %s', 'woo-minimum-order-alerts' ), date( 'Y-m-d' ) );
@@ -46,7 +67,7 @@ function get_alert_email_subject() {
  *
  * @return HTML
  */
-function get_alert_email_content() {
+function get_alert_content() {
 
 	// First write the content.
 	$set_content    = '<p>' . __( 'Your store did not reach the minimum order count that you configured.', 'woo-minimum-order-alerts' ) . '</p>';
@@ -66,7 +87,7 @@ function get_alert_email_content() {
 	$build_html    .= '</html>';
 
 	// Now send it back with a second filter.
-	return apply_filters( Core\HOOK_PREFIX . 'alert_email_content_html', trim( $build_html ) );
+	return apply_filters( Core\HOOK_PREFIX . 'alert_email_html_content', trim( $build_html ) );
 }
 
 /**
@@ -74,7 +95,7 @@ function get_alert_email_content() {
  *
  * @return string
  */
-function get_alert_email_from_name() {
+function get_alert_from_name() {
 
 	// Pull the blog name we have.
 	$get_site_title = get_bloginfo( 'name' );
@@ -91,7 +112,7 @@ function get_alert_email_from_name() {
  *
  * @return string
  */
-function get_alert_email_from_address() {
+function get_alert_from_address() {
 
 	// First pull the domain and parse it.
 	$get_site_home  = wp_parse_url( network_home_url(), PHP_URL_HOST );
@@ -113,15 +134,15 @@ function get_alert_email_from_address() {
  *
  * @return string
  */
-function get_alert_email_headers() {
+function get_alert_headers() {
 
 	// Set the from name.
-	$set_from_name  = get_alert_email_from_name();
-	$set_from_email = get_alert_email_from_address();
+	$set_from_name  = get_alert_from_name();
+	$set_from_email = get_alert_from_address();
 
 	// Now set my headers.
 	$set_headers[]  = 'Content-Type: text/html; charset=UTF-8';
-	$set_headers[]  = sprintf( __( 'From: %1$s <%2$s>', 'woo-better-reviews' ), esc_attr( $set_from_name ), $set_from_email );
+	$set_headers[]  = sprintf( __( 'From: %1$s <%2$s>', 'woo-minimum-order-alerts' ), esc_attr( $set_from_name ), $set_from_email );
 
 	// Return it filtered.
 	return apply_filters( Core\HOOK_PREFIX . 'alert_email_headers', $set_headers );

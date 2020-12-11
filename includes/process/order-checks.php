@@ -88,7 +88,7 @@ function fetch_previous_day_orders( $return_counts = true, $purge_cache = false 
 
 		// Return an actual zero or "none" if we have none.
 		if ( empty( $fetch_batch_orders ) ) {
-			return false !== $return_count ? 'none' : 0;
+			return false !== $return_counts ? 'none' : 0;
 		}
 
 		// Set our transient with our data.
