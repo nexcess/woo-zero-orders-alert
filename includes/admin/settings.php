@@ -17,56 +17,74 @@ use Nexcess\WooMinimumOrderAlerts\Admin\Setup as AdminSetup;
 /**
  * Start our engines.
  */
-add_filter( 'woocommerce_get_sections_products', __NAMESPACE__ . '\add_settings_section' );
-add_filter( 'woocommerce_get_settings_products', __NAMESPACE__ . '\load_settings_fields', 10, 2 );
-add_action( 'woocommerce_admin_field_alert_types', __NAMESPACE__ . '\render_custom_admin_field' );
-add_filter( 'woocommerce_admin_settings_sanitize_option', __NAMESPACE__ . '\sanitize_alert_types_option', 10, 3 );
+add_filter( 'woocommerce_settings_tabs_array', __NAMESPACE__ . '\add_settings_tab', 50 );
+add_action( 'woocommerce_settings_tabs_order-monitoring', __NAMESPACE__ . '\display_admin_fields' );
+add_action( 'woocommerce_admin_field_alert_types', __NAMESPACE__ . '\render_alert_types_field' );
+add_filter( 'woocommerce_admin_settings_sanitize_option', __NAMESPACE__ . '\sanitize_alert_types_option', 40, 3 );
+add_action( 'woocommerce_update_options_order-monitoring', __NAMESPACE__ . '\update_admin_settings' );
 
 /**
- * Add our new settings section for display later.
+ * Add a new settings tab to the WooCommerce settings tabs array.
  *
- * @param array $sections  The existing sections.
+ * @param  array $tabs  The current array of WooCommerce setting tabs.
  *
- * @param array
+ * @return array $tabs  The modified array of WooCommerce setting tabs.
  */
-function add_settings_section( $sections ) {
+function add_settings_tab( $tabs ) {
 
-	// Add our new section, assuming it doesnt exist.
-	if ( ! isset( $sections[ Core\MENU_SLUG ] ) ) {
-		$sections[ Core\MENU_SLUG ] = __( 'Minimum Order Alerts', 'woo-minimum-order-alerts' );
+	// Confirm we don't already have the tab.
+	if ( ! isset( $tabs[ Core\TAB_SLUG ] ) ) {
+		$tabs[ Core\TAB_SLUG ] = __( 'Order Monitoring', 'woo-minimum-order-alerts' );
 	}
 
-	// And return it.
-	return $sections;
+	// If we have the advanced tab, move it to the end.
+	if ( isset( $tabs['advanced'] ) ) {
+
+		// Set the advanced tab so we can add it back to the end.
+		$advanced_tab   = $tabs['advanced'];
+
+		// Now remove the existing.
+		unset( $tabs['advanced'] );
+
+		// Add the advanced tab back to the end.
+		$tabs['advanced'] = $advanced_tab;
+	}
+
+	// And return the entire array.
+	return $tabs;
 }
 
 /**
- * Load up our custom settings to be added.
+ * Uses the WooCommerce admin fields API to output settings.
  *
- * @param  array  $settings         The current array of settings for that section.
- * @param  string $current_section  Which section is being done.
+ * @see  woocommerce_admin_fields() function.
  *
- * @return array
+ * @uses woocommerce_admin_fields()
+ * @uses self::get_tab_settings()
  */
-function load_settings_fields( $settings, $current_section ) {
+function display_settings_tab() {
+	woocommerce_admin_fields( get_tab_settings() );
+}
 
-	// Return whatever we have if we aren't on our settings.
-	if ( empty( $current_section ) || Core\MENU_SLUG !== $current_section ) {
-		return $settings;
-	}
+/**
+ * Create the array of settings we are going to display.
+ *
+ * @return array $settings  The array of settings data.
+ */
+function get_tab_settings() {
 
-	// Now set up our settings array.
-	$set_settings_args  = array(
+	// Set up our array, including default Woo items.
+	$setup_args = array(
 
-		// Add our title.
-		array(
+		'mainheader' => array(
 			'title' => __( 'Minimum Order Alerts', 'woo-minimum-order-alerts' ),
 			'type'  => 'title',
-			'id'    => Core\MENU_SLUG,
+			'desc'  => __( 'Set an alert when your store does not reach a daily target.', 'woo-minimum-order-alerts' ),
+			'id'    => Core\SECTION_ID,
 		),
 
 		// Set the input for our number.
-		array(
+		'min-val' => array(
 			'title'             => __( 'Minimum Order Amount', 'woo-minimum-order-alerts' ),
 			'desc'              => __( 'Set a minimum that matches your expected daily order volume.', 'woo-minimum-order-alerts' ),
 			'id'                => Core\OPTION_PREFIX . 'min_val',
@@ -82,24 +100,26 @@ function load_settings_fields( $settings, $current_section ) {
 		),
 
 		// Load our custom alert types field.
-		array(
+		'alert-types' => array(
 			'title'    => __( 'Notifications', 'woo-minimum-order-alerts' ),
 			'id'       => Core\OPTION_PREFIX . 'alert_types',
 			'type'     => 'alert_types',
 			'autoload' => false,
 			'options'  => AdminSetup\registered_alert_types(),
 			'screen'   => __( 'The individual alert notification options', 'woo-minimum-order-alerts' ),
+			'default'  => '',
 		),
 
 		// Add our section end.
-		array(
+		'mainsection_end' => array(
 			'type' => 'sectionend',
-			'id'   => Core\MENU_SLUG,
+			'id'   => Core\SECTION_ID . '-end',
 		),
+
 	);
 
-	// And return our new args.
-	return $set_settings_args;
+	// Return our set of fields with a filter.
+	return apply_filters( Core\HOOK_PREFIX . 'settings_data_array', $setup_args );
 }
 
 /**
@@ -109,7 +129,7 @@ function load_settings_fields( $settings, $current_section ) {
  *
  * @return HTML
  */
-function render_custom_admin_field( $field_args ) {
+function render_alert_types_field( $field_args ) {
 
 	// Set our value to make sure we can check against it.
 	$set_stored_values  = ! empty( $field_args['value'] ) && is_array( $field_args['value'] ) ? $field_args['value'] : array();
@@ -177,15 +197,33 @@ function render_custom_admin_field( $field_args ) {
 function sanitize_alert_types_option( $value, $option, $raw_value ) {
 
 	// Check to make sure we are looking at the option we want.
-	if ( 'min-order-alerts-settings' !== $option['id'] ) {
+	if ( empty( $option['id'] ) || Core\SECTION_ID !== $option['id'] ) {
 		return $value;
 	}
 
-	// Return an empty if nothing was posted.
-	if ( empty( $_POST[ Core\OPTION_PREFIX . 'alert_types' ] ) ) {
+	// If this field is totally empty, manually fix the setting
+	// since Woo doesn't allow for saving an empty value.
+	if ( ! isset( $_POST[ Core\OPTION_PREFIX . 'alert_types' ] ) ) {
+
+		// Set our option back to the empty value.
+		update_option( Core\OPTION_PREFIX . 'alert_types', '', 'no' );
+
+		// And return an empty.
 		return '';
 	}
 
 	// Return it, with each one sanitized.
 	return array_map( 'sanitize_text_field', $_POST[ Core\OPTION_PREFIX . 'alert_types' ] );
+}
+
+/**
+ * Uses the WooCommerce options API to save settings.
+ *
+ * @see woocommerce_update_options() function.
+ *
+ * @uses woocommerce_update_options()
+ * @uses self::get_tab_settings()
+ */
+function update_admin_settings() {
+	woocommerce_update_options( get_tab_settings() );
 }

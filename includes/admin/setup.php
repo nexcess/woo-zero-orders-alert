@@ -39,7 +39,7 @@ function run_on_activate() {
 	// Set our initial options in the DB.
 	update_option( Core\OPTION_PREFIX . 'last_checked', $define_today_stamp, 'no' );
 	update_option( Core\OPTION_PREFIX . 'min_val', 5, 'no' );
-	update_option( Core\OPTION_PREFIX . 'alert_types', array(), 'no' );
+	update_option( Core\OPTION_PREFIX . 'alert_types', '', 'no' );
 }
 
 /**

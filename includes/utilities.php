@@ -36,8 +36,8 @@ function get_woo_section_settings_link() {
 	// Set the args.
 	$set_link_args  = array(
 		'page'    => 'wc-settings',
-		'tab'     => 'products',
-		'section' => Core\MENU_SLUG,
+		'tab'     => Core\TAB_SLUG,
+		'section' => Core\SECTION_ID,
 	);
 
 	// Return the link with our args.

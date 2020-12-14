@@ -47,7 +47,8 @@ define( __NAMESPACE__ . '\TRANSIENT_PREFIX', 'nx_moa_tr_' );
 define( __NAMESPACE__ . '\OPTION_PREFIX', 'woo_nx_moa_setting_' );
 
 // Define our menu slug.
-define( __NAMESPACE__ . '\MENU_SLUG', 'min-order-alerts-settings' );
+define( __NAMESPACE__ . '\TAB_SLUG', 'order-monitoring' );
+define( __NAMESPACE__ . '\SECTION_ID', 'min-order-alerts-settings' );
 
 // Define the parts for the Woo inbox.
 define( __NAMESPACE__ . '\WOO_INBOX_SOURCE', 'nx-min-order-alerts' );
