@@ -11,8 +11,7 @@ namespace Nexcess\WooMinimumOrderAlerts\AlertTypes\Inbox;
 // Set our aliases.
 use Nexcess\WooMinimumOrderAlerts as Core;
 
-// Pull in the reqired a8c pieces.
-use \Automattic\WooCommerce\Admin\Install;
+// Pull in the required a8c pieces.
 use \Automattic\WooCommerce\Admin\Notes\WC_Admin_Notes;
 use \Automattic\WooCommerce\Admin\Notes\WC_Admin_Note;
 use \Automattic\WooCommerce\Admin\Notes\Notes;
@@ -41,16 +40,18 @@ function send_inbox_alert() {
 		return;
 	}
 
+	/*
 	// Check to see if our note already exists.
 	$maybe_note_exists  = $load_admin_notes->get_notes_with_name( $fetch_note_args['name'] );
 
 	// If we already have it, bail.
-	if ( ! empty( $fetch_all_note_ids ) ) {
+	if ( ! empty( $maybe_note_exists ) ) {
 		return;
 	}
+	*/
 
 	// Now get the version and make sure we use the correct class.
-	$current_wc_admin   = get_option( Install::VERSION_OPTION );
+	$current_wc_admin   = get_option( 'woocommerce_admin_version' );
 	$use_new_note_class = version_compare( '1.6.0', $current_wc_admin ) > 0;
 
 	// Set the correct class based on the WC admin version.
@@ -73,8 +74,10 @@ function send_inbox_alert() {
 		$set_alert->set_image( $fetch_note_args['image'] );
 	}
 
+	// Include an action to look at the
 	// $set_alert->add_action( $note[ 'action' ], 'Test action', wc_admin_url() );
 
+	// And save the note.
 	$set_alert->save();
 }
 
@@ -87,7 +90,6 @@ function get_single_alert_args() {
 
 	// Construct the individual args.
 	$set_note_args  = array(
-
 		'title'   => get_alert_title(),
 		'content' => get_alert_content(),
 		'name'    => Core\WOO_INBOX_NOTE_ID,
