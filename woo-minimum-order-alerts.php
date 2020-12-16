@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WooCommerce Minimum Order Alerts
+ * Plugin Name: Minimum Order Alerts for WooCommerce
  * Plugin URI:  https://www.nexcess.net
  * Description: Notify store owners when minimim daily order targets are missed.
  * Version:     0.0.1-dev
@@ -46,12 +46,12 @@ define( __NAMESPACE__ . '\NONCE_PREFIX', 'woo_nxmoa_nonce_' );
 define( __NAMESPACE__ . '\TRANSIENT_PREFIX', 'nx_moa_tr_' );
 define( __NAMESPACE__ . '\OPTION_PREFIX', 'woo_nx_moa_setting_' );
 
-// Define our menu slug.
+// Define our tab slug and potential section ID.
 define( __NAMESPACE__ . '\TAB_SLUG', 'order-monitoring' );
-define( __NAMESPACE__ . '\SECTION_ID', 'min-order-alerts-settings' );
+define( __NAMESPACE__ . '\SECTION_ID', 'min-orders-settings' );
 
 // Define the parts for the Woo inbox.
-define( __NAMESPACE__ . '\WOO_INBOX_SOURCE', 'nx-min-order-alerts' );
+define( __NAMESPACE__ . '\WOO_INBOX_SOURCE', 'nx-order-monitoring' );
 define( __NAMESPACE__ . '\WOO_INBOX_NOTE_ID', 'min-order-alert' );
 
 // Set our cron function name constants.

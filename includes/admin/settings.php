@@ -33,25 +33,15 @@ add_action( 'woocommerce_update_options_order-monitoring', __NAMESPACE__ . '\upd
 function add_settings_tab( $tabs ) {
 
 	// Confirm we don't already have the tab.
-	if ( ! isset( $tabs[ Core\TAB_SLUG ] ) ) {
-		$tabs[ Core\TAB_SLUG ] = __( 'Order Monitoring', 'woo-minimum-order-alerts' );
+	if ( isset( $tabs[ Core\TAB_SLUG ] ) ) {
+		return $tabs;
 	}
 
-	// If we have the advanced tab, move it to the end.
-	if ( isset( $tabs['advanced'] ) ) {
+	// Now add our new one.
+	$tabs[ Core\TAB_SLUG ] = __( 'Order Monitoring', 'woo-minimum-order-alerts' );
 
-		// Set the advanced tab so we can add it back to the end.
-		$advanced_tab   = $tabs['advanced'];
-
-		// Now remove the existing.
-		unset( $tabs['advanced'] );
-
-		// Add the advanced tab back to the end.
-		$tabs['advanced'] = $advanced_tab;
-	}
-
-	// And return the entire array.
-	return $tabs;
+	// Return the tabs with our shifter applied.
+	return Helpers\maybe_shift_advanced_tab( $tabs );
 }
 
 /**
@@ -62,7 +52,7 @@ function add_settings_tab( $tabs ) {
  * @uses woocommerce_admin_fields()
  * @uses self::get_tab_settings()
  */
-function display_settings_tab() {
+function display_admin_fields() {
 	woocommerce_admin_fields( get_tab_settings() );
 }
 

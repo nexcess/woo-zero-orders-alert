@@ -50,3 +50,32 @@ function maybe_alerts_configured() {
 	// Return a basic array of the ones we have.
 	return ! empty( $check_alert_types ) ? $check_alert_types : false;
 }
+
+/**
+ * If we have the "advanced" tab, shift it.
+ *
+ * @param  array $tabs  The existing array of tabs.
+ *
+ * @return array
+ */
+function maybe_shift_advanced_tab( $tabs ) {
+
+	// If we don't have the advanced tab, or if
+	// the advanced tab is at the end, return it.
+	if ( empty( $tabs ) || ! isset( $tabs['advanced'] ) || 'advanced' === end( $tabs ) ) {
+		return $tabs;
+	}
+
+	// Set the advanced tab so we can add it back to the end.
+	$set_advncd = $tabs['advanced'];
+
+	// Now remove the existing.
+	unset( $tabs['advanced'] );
+
+	// Add the advanced tab back to the end.
+	$tabs['advanced'] = $set_advncd;
+
+	// And return the entire array.
+	return $tabs;
+
+}
