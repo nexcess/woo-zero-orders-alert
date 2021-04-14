@@ -17,51 +17,46 @@ use Nexcess\WooMinimumOrderAlerts\Admin\Setup as AdminSetup;
 /**
  * Start our engines.
  */
-add_filter( 'woocommerce_settings_tabs_array', __NAMESPACE__ . '\add_settings_tab', 50 );
-add_action( 'woocommerce_settings_tabs_order-monitoring', __NAMESPACE__ . '\display_admin_fields' );
+add_filter( 'woocommerce_get_sections_advanced', __NAMESPACE__ . '\add_settings_section', 50 );
+add_filter( 'woocommerce_get_settings_advanced', __NAMESPACE__ . '\load_section_settings', 10, 2 );
 add_action( 'woocommerce_admin_field_alert_types', __NAMESPACE__ . '\render_alert_types_field' );
 add_filter( 'woocommerce_admin_settings_sanitize_option', __NAMESPACE__ . '\sanitize_alert_types_option', 40, 3 );
-add_action( 'woocommerce_update_options_order-monitoring', __NAMESPACE__ . '\update_admin_settings' );
 
 /**
- * Add a new settings tab to the WooCommerce settings tabs array.
+ * Include our new settings section.
  *
- * @param  array $tabs  The current array of WooCommerce setting tabs.
+ * @param  array $sections  The existing array of sections.
  *
- * @return array $tabs  The modified array of WooCommerce setting tabs.
+ * @return array $sections  The modified array of WooCommerce sections.
  */
-function add_settings_tab( $tabs ) {
+function add_settings_section( $sections ) {
 
-	// Confirm we don't already have the tab.
-	if ( isset( $tabs[ Core\TAB_SLUG ] ) ) {
-		return $tabs;
+	// Confirm we don't already have the section.
+	if ( isset( $sections[ Core\SECTION_ID ] ) ) {
+		return $sections;
 	}
 
-	// Now add our new one.
-	$tabs[ Core\TAB_SLUG ] = __( 'Order Monitoring', 'woo-minimum-order-alerts' );
+	// Now add our section.
+	$sections[ Core\SECTION_ID ] = __( 'Minimum Order Alerts', 'woo-minimum-order-alerts' );
 
-	// Return the tabs with our shifter applied.
-	return Helpers\maybe_shift_advanced_tab( $tabs );
+	// And return the array of sections.
+	return $sections;
 }
 
 /**
- * Uses the WooCommerce admin fields API to output settings.
+ * Load up the settings inside our section piece.
  *
- * @see  woocommerce_admin_fields() function.
+ * @param  array  $settings         The possible array of settings.
+ * @param  string $current_section  Which section we are on.
  *
- * @uses woocommerce_admin_fields()
- * @uses self::get_tab_settings()
+ * @return array
  */
-function display_admin_fields() {
-	woocommerce_admin_fields( get_tab_settings() );
-}
+function load_section_settings( $settings, $current_section ) {
 
-/**
- * Create the array of settings we are going to display.
- *
- * @return array $settings  The array of settings data.
- */
-function get_tab_settings() {
+	// Return the settings if we aren't on our section.
+	if ( Core\SECTION_ID !== $current_section ) {
+		return $settings;
+	}
 
 	// Set up our array, including default Woo items.
 	$setup_args = array(
@@ -204,16 +199,4 @@ function sanitize_alert_types_option( $value, $option, $raw_value ) {
 
 	// Return it, with each one sanitized.
 	return array_map( 'sanitize_text_field', $_POST[ Core\OPTION_PREFIX . 'alert_types' ] );
-}
-
-/**
- * Uses the WooCommerce options API to save settings.
- *
- * @see woocommerce_update_options() function.
- *
- * @uses woocommerce_update_options()
- * @uses self::get_tab_settings()
- */
-function update_admin_settings() {
-	woocommerce_update_options( get_tab_settings() );
 }
