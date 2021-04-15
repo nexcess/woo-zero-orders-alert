@@ -18,7 +18,7 @@ use Nexcess\WooZeroOrdersAlert\Process\Alerts as ProcessAlerts;
  * Start our engines.
  */
 add_filter( 'cron_schedules', __NAMESPACE__ . '\add_custom_cron_schedule' );
-add_action( Core\ORDER_CHECK_CRON, __NAMESPACE__ . '\run_zero_order_check' );
+add_action( Core\ORDER_CHECK_CRON, __NAMESPACE__ . '\run_order_check_cron' );
 
 /**
  * Add our custom 8 hour cron schedule time.
@@ -90,7 +90,7 @@ function set_ongoing_order_check( $clear_existing = false ) {
  *
  * @return void
  */
-function run_zero_order_check() {
+function run_order_check_cron() {
 
 	// First check if we need to run the check.
 	$maybe_order_check  = Utilities\maybe_run_order_check();
