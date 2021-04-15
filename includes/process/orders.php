@@ -58,7 +58,7 @@ function fetch_previous_day_orders( $purge_cache = false ) {
 		// Now fetch all the orders.
 		$fetch_batch_orders = $run_query_lookup->get_orders();
 
-		// Return an actual zero or "none" if we have none.
+		// Return "none" if we have none, so it's easy to compare.
 		if ( empty( $fetch_batch_orders ) ) {
 			return 'none';
 		}
