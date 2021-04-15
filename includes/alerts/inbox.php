@@ -2,14 +2,14 @@
 /**
  * Everything related to building and sending a message to the Woo inbox.
  *
- * @package WooMinimumOrderAlerts
+ * @package WooZeroOrdersAlert
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\AlertTypes\Inbox;
+namespace Nexcess\WooZeroOrdersAlert\AlertTypes\Inbox;
 
 // Set our aliases.
-use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooZeroOrdersAlert as Core;
 
 // Pull in the required a8c pieces.
 use \Automattic\WooCommerce\Admin\Notes\WC_Admin_Notes;

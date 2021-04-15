@@ -6,20 +6,20 @@
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\Process\CronTasks;
+namespace Nexcess\WooZeroOrdersAlert\Process\CronTasks;
 
 // Set our aliases.
-use Nexcess\WooMinimumOrderAlerts as Core;
-use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
-use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
-use Nexcess\WooMinimumOrderAlerts\Process\OrderChecks as OrderChecks;
-use  Nexcess\WooMinimumOrderAlerts\Process\Notifications as Notifications;
+use Nexcess\WooZeroOrdersAlert as Core;
+use Nexcess\WooZeroOrdersAlert\Helpers as Helpers;
+use Nexcess\WooZeroOrdersAlert\Utilities as Utilities;
+use Nexcess\WooZeroOrdersAlert\Process\OrderChecks as OrderChecks;
+use  Nexcess\WooZeroOrdersAlert\Process\Notifications as Notifications;
 
 /**
  * Start our engines.
  */
 add_filter( 'cron_schedules', __NAMESPACE__ . '\add_custom_cron_schedule' );
-add_action( Core\ORDER_CHECK_CRON, __NAMESPACE__ . '\check_order_compare_via_cron' );
+add_action( Core\ORDER_CHECK_CRON, __NAMESPACE__ . '\run_zero_order_check' );
 
 /**
  * Add our custom 8 hour cron schedule time.
@@ -31,43 +31,56 @@ add_action( Core\ORDER_CHECK_CRON, __NAMESPACE__ . '\check_order_compare_via_cro
  */
 function add_custom_cron_schedule( $schedules ) {
 
-	// Set the 8 hour interval.
-	$set_custom_intval   = HOUR_IN_SECONDS * 8;
+	// Only add it if it doesn't exist.
+	if ( ! isset( $schedules['eighthours'] ) ) {
 
-	// And set the array.
-	$schedules['eight-hrs'] = array(
-		'interval' => absint( $set_custom_intval ),
-		'display'  => __( 'Every 8 Hours', 'woo-minimum-order-alerts' )
-	);
+		// Set the 8 hour interval.
+		$set_custom_intval   = HOUR_IN_SECONDS * 8;
 
-	// And return the resulting array.
+		// Add our new one.
+		$schedules['eighthours'] = array(
+			'interval' => absint( $set_custom_intval ),
+			'display'  => __( 'Every 8 Hours', 'woo-minimum-order-alerts' ),
+		);
+	}
+
+	// And return the updated array.
 	return $schedules;
 }
 
 /**
- * Take our existing cron job and update or remove the schedule.
- *
- * @param  boolean $clear      Whether to remove the existing one.
- * @param  string  $frequency  The new frequency we wanna use.
+ * Clear out an existing cron entry before setting a new one.
  *
  * @return void
  */
-function modify_order_check_cron( $clear = true, $frequency = 'eight-hrs' ) {
+function clear_existing_cron() {
 
-	// Pull in the existing one and remove it.
-	if ( ! empty( $clear ) ) {
+	// Grab the next scheduled stamp.
+	$maybe_has_schedule = wp_next_scheduled( Core\ORDER_CHECK_CRON );
 
-		// Grab the next scheduled stamp.
-		$timestamp  = wp_next_scheduled( Core\ORDER_CHECK_CRON );
-
-		// Remove it from the schedule.
-		wp_unschedule_event( $timestamp, Core\ORDER_CHECK_CRON );
+	// If we have one, remove it from the schedule first.
+	if ( ! empty( $maybe_has_schedule ) ) {
+		wp_unschedule_event( $maybe_has_schedule, Core\ORDER_CHECK_CRON );
 	}
 
-	// Now schedule our new one, assuming we passed a new frequency.
-	if ( ! empty( $frequency ) ) {
-		wp_schedule_event( current_time( 'timestamp' ), sanitize_text_field( $frequency ), Core\ORDER_CHECK_CRON );
+	// And be done.
+	return;
+}
+
+/**
+ * Set the cron for the ongoing order checks.
+ *
+ * @return void
+ */
+function set_ongoing_order_check( $clear_existing = false ) {
+
+	// Confirm we are clear first.
+	if ( false !== $clear_existing ) {
+		clear_existing_cron();
 	}
+
+	// Now schedule our new one with our custom new frequency.
+	wp_schedule_event( current_time( 'timestamp' ), 'eighthours', Core\ORDER_CHECK_CRON );
 }
 
 /**
@@ -76,30 +89,15 @@ function modify_order_check_cron( $clear = true, $frequency = 'eight-hrs' ) {
  *
  * @return void
  */
-function check_order_compare_via_cron() {
+function run_zero_order_check() {
 
-	// Run our timestamp comparisons first.
-	$maybe_time_passed  = Helpers\maybe_last_checked_passed();
+	// First check if we need to run the check.
+	$maybe_order_check  = Helpers\maybe_run_order_check();
 
-	// If it isn't time yet, don't do it.
-	if ( false === $maybe_time_passed ) {
+	// Nothing to do if we don't have the check to run.
+	if ( false === $maybe_order_check ) {
 		return;
 	}
-
-	// Compare the orders.
-	$check_order_target = OrderChecks\process_order_comparison();
-
-	// If we came back true, then we hit the target.
-	// Good job, everyone!
-	if ( false !== $check_order_target ) {
-		return;
-	}
-
-	// Handle any of our notifications.
-	Notifications\process_minimum_orders_alerts();
-
-	// And go set my next stamp.
-	Utilities\set_next_check_stamp();
 
 	// And we are done here.
 	return;

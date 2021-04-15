@@ -2,39 +2,16 @@
 /**
  * The queries and comparisons for our orders.
  *
- * @package WooMinimumOrderAlerts
+ * @package WooZeroOrdersAlert
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\Process\OrderChecks;
+namespace Nexcess\WooZeroOrdersAlert\Process\OrderChecks;
 
 // Set our aliases.
-use Nexcess\WooMinimumOrderAlerts as Core;
-use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
-use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
-
-/**
- * Run the comparison of the orders.
- *
- * @return boolean
- */
-function process_order_comparison() {
-
-	// First we fetch the order count.
-	$get_order_nums = fetch_previous_day_orders();
-
-	// If we had no orders, it does not
-	// matter what the minimum is.
-	if ( empty( $get_order_nums ) ) {
-		return false;
-	}
-
-	// Get the minimum value we stored.
-	$get_min_value  = get_option( Core\OPTION_PREFIX . 'min_val', 5 );
-
-	// Do our check and return a boolean.
-	return absint( $get_order_nums ) >= absint( $get_min_value ) ? true : false;
-}
+use Nexcess\WooZeroOrdersAlert as Core;
+use Nexcess\WooZeroOrdersAlert\Helpers as Helpers;
+use Nexcess\WooZeroOrdersAlert\Utilities as Utilities;
 
 /**
  * Get all the orders from the previous day.

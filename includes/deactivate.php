@@ -2,14 +2,14 @@
 /**
  * Our deactivation call.
  *
- * @package WooMinimumOrderAlerts
+ * @package WooZeroOrdersAlert
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\Deactivate;
+namespace Nexcess\WooZeroOrdersAlert\Deactivate;
 
 // Set our aliases.
-use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooZeroOrdersAlert as Core;
 
 /**
  * Delete various options when deactivating the plugin.

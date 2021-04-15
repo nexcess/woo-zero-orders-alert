@@ -2,14 +2,14 @@
 /**
  * Our uninstall call.
  *
- * @package WooMinimumOrderAlerts
+ * @package WooZeroOrdersAlert
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\Uninstall;
+namespace Nexcess\WooZeroOrdersAlert\Uninstall;
 
 // Set our aliases.
-use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooZeroOrdersAlert as Core;
 
 /**
  * Delete various options when uninstalling the plugin.

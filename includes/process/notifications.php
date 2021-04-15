@@ -2,16 +2,16 @@
 /**
  * Handle our different notification methods.
  *
- * @package WooMinimumOrderAlerts
+ * @package WooZeroOrdersAlert
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\Process\Notifications;
+namespace Nexcess\WooZeroOrdersAlert\Process\Notifications;
 
 // Set our aliases.
-use Nexcess\WooMinimumOrderAlerts as Core;
-use Nexcess\WooMinimumOrderAlerts\Helpers as Helpers;
-use Nexcess\WooMinimumOrderAlerts\Utilities as Utilities;
+use Nexcess\WooZeroOrdersAlert as Core;
+use Nexcess\WooZeroOrdersAlert\Helpers as Helpers;
+use Nexcess\WooZeroOrdersAlert\Utilities as Utilities;
 
 // And pull in any other namespaces.
 use WP_Error;
@@ -42,12 +42,12 @@ function process_minimum_orders_alerts() {
 
 			// Run our emailer.
 			case 'email' :
-				\Nexcess\WooMinimumOrderAlerts\AlertTypes\Email\send_email_alert();
+				\Nexcess\WooZeroOrdersAlert\AlertTypes\Email\send_email_alert();
 				break;
 
 			// Run our Woo inbox.
 			case 'inbox' :
-				\Nexcess\WooMinimumOrderAlerts\AlertTypes\Inbox\send_inbox_alert();
+				\Nexcess\WooZeroOrdersAlert\AlertTypes\Inbox\send_inbox_alert();
 				break;
 		}
 

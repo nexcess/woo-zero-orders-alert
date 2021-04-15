@@ -2,14 +2,14 @@
 /**
  * Everything related to building and sending an email.
  *
- * @package WooMinimumOrderAlerts
+ * @package WooZeroOrdersAlert
  */
 
 // Declare our namespace.
-namespace Nexcess\WooMinimumOrderAlerts\AlertTypes\Email;
+namespace Nexcess\WooZeroOrdersAlert\AlertTypes\Email;
 
 // Set our aliases.
-use Nexcess\WooMinimumOrderAlerts as Core;
+use Nexcess\WooZeroOrdersAlert as Core;
 
 /**
  * Send the actual email.
