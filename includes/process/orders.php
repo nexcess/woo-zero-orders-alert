@@ -44,7 +44,7 @@ function fetch_previous_day_orders( $purge_cache = false ) {
 			'type'         => 'shop_order',
 			'return'       => 'ids',
 			'status'       => array( 'wc-completed' ),
-			'date_created' => absint( $fetch_query_stamps['start'] ) . '...' . absint( $fetch_query_stamps['today'] ),
+			'date_created' => $fetch_query_stamps['query'],
 		);
 
 		// Now run our lookup.

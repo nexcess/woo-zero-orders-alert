@@ -65,7 +65,7 @@ function get_yesterday_timestamp() {
 }
 
 /**
- * A simple wrapper function to return both stamps.
+ * A simple wrapper function to return both stamps and a string.
  *
  * @return array
  */
@@ -77,10 +77,14 @@ function get_order_check_timestamps() {
 	// Subtract the day and return it.
 	$define_start_stamp = absint( $define_today_stamp ) - DAY_IN_SECONDS;
 
+	// And now set the string used in the query.
+	$set_create_string  = absint( $define_start_stamp ) . '...' . absint( $define_today_stamp );
+
 	// Return an array.
 	return array(
 		'today' => $define_today_stamp,
 		'start' => $define_start_stamp,
+		'query' => $set_create_string,
 	);
 }
 
