@@ -89,14 +89,30 @@ function get_order_check_timestamps() {
 }
 
 /**
+ * Handle setting the first "last checked" timestamp.
+ *
+ * @return void
+ */
+function set_initial_checked_stamp() {
+
+	// Get the timestamp from yesterday.
+	$define_start_stamp = get_yesterday_timestamp();
+
+	// Set our initial options in the DB.
+	update_option( Core\OPTION_PREFIX . 'last_checked', $define_start_stamp, 'no' );
+}
+
+/**
  * Handle setting the last checked timestamp.
+ *
+ * @return void
  */
 function set_last_checked_stamp() {
 
-	// Get the today timestamp.
-	$define_today_stamp = get_today_timestamp();
+	// Get the timestamp from today.
+	$define_start_stamp = get_today_timestamp();
 
 	// Set our initial options in the DB.
-	update_option( Core\OPTION_PREFIX . 'last_checked', $define_today_stamp, 'no' );
+	update_option( Core\OPTION_PREFIX . 'last_checked', $define_start_stamp, 'no' );
 }
 

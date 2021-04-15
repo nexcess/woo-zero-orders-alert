@@ -48,28 +48,20 @@ function fetch_previous_day_orders( $purge_cache = false ) {
 		);
 
 		// Now run our lookup.
-		$run_query_lookup   = new \WC_Order_Query( $setup_single_args );
-
-		// Bail out if none exist.
-		if ( empty( $run_query_lookup ) || is_wp_error( $run_query_lookup ) ) {
-			return false;
-		}
-
-		// Now fetch all the orders.
-		$fetch_batch_orders = $run_query_lookup->get_orders();
+		$fetch_batch_orders = wc_get_orders( $setup_single_args );
 
 		// Return "none" if we have none, so it's easy to compare.
-		if ( empty( $fetch_batch_orders ) ) {
+		if ( empty( $fetch_batch_orders ) || is_wp_error( $fetch_batch_orders ) ) {
 			return 'none';
 		}
 
 		// Set our transient with our data.
 		set_transient( $ky, $fetch_batch_orders, HOUR_IN_SECONDS );
 
-		// And change the variable to do the things.
-		$cached_dataset = $fetch_batch_orders;
+		// Set the cached item to be the overall count.
+		$cached_dataset = count( $fetch_batch_orders );
 	}
 
 	// Return the order count.
-	return count( $cached_dataset );
+	return $cached_dataset;
 }

@@ -78,13 +78,15 @@ function set_ongoing_order_check( $clear_existing = false ) {
 		clear_existing_cron();
 	}
 
+	// Set a timestamp to have our first one run.
+	$define_start_stamp = time() + HOUR_IN_SECONDS;
+
 	// Now schedule our new one with our custom new frequency.
-	wp_schedule_event( current_time( 'timestamp' ), 'eighthours', Core\ORDER_CHECK_CRON );
+	wp_schedule_event( absint( $define_start_stamp ), 'eighthours', Core\ORDER_CHECK_CRON );
 }
 
 /**
- * Our cron job that checks to see if
- * the time has passed to run a check.
+ * The ongoing time check for running the single day check.
  *
  * @return void
  */

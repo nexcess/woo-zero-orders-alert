@@ -10,6 +10,8 @@ namespace Nexcess\WooZeroOrdersAlert\Activate;
 
 // Set our aliases.
 use Nexcess\WooZeroOrdersAlert as Core;
+use Nexcess\WooZeroOrdersAlert\Utilities as Utilities;
+use Nexcess\WooZeroOrdersAlert\Process\Cron as ProcessCron;
 
 /**
  * Our inital setup function when activated.
@@ -20,6 +22,12 @@ function activate() {
 
 	// Do the check for WooCommerce being active.
 	check_active_woo();
+
+	// First clear any possible existing cron and set the next one.
+	ProcessCron\set_ongoing_order_check( true );
+
+	// And set the last checked stamp.
+	Utilities\set_initial_checked_stamp();
 
 	// Include our action so that we may add to this later.
 	do_action( Core\HOOK_PREFIX . 'activate_process' );
