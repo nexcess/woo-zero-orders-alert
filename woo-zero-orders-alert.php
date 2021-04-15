@@ -34,9 +34,6 @@ define( __NAMESPACE__ . '\BASE', plugin_basename( __FILE__ ) );
 // Plugin Folder URL.
 define( __NAMESPACE__ . '\URL', plugin_dir_url( __FILE__ ) );
 
-// Set our assets URL constant.
-define( __NAMESPACE__ . '\ASSETS_URL', URL . 'assets' );
-
 // Set our includes path constants.
 define( __NAMESPACE__ . '\INCLUDES_PATH', __DIR__ . '/includes' );
 
@@ -60,18 +57,13 @@ nx_woo_zero_orders_alert_file_load();
 function nx_woo_zero_orders_alert_file_load() {
 
 	// Load the multi-use files first.
-	require_once __DIR__ . '/includes/helpers.php';
 	require_once __DIR__ . '/includes/utilities.php';
 
 	// Pull in the processing parts.
-	require_once __DIR__ . '/includes/process/site-setup.php';
-	// require_once __DIR__ . '/includes/process/notifications.php';
-	// require_once __DIR__ . '/includes/process/order-checks.php';
-	require_once __DIR__ . '/includes/process/cron-tasks.php';
-
-	// Load our individual alert types.
-	// require_once __DIR__ . '/includes/alerts/email.php';
-	// require_once __DIR__ . '/includes/alerts/inbox.php';
+	require_once __DIR__ . '/includes/process/setup.php';
+	require_once __DIR__ . '/includes/process/alerts.php';
+	require_once __DIR__ . '/includes/process/orders.php';
+	require_once __DIR__ . '/includes/process/cron.php';
 
 	// Load the triggered file loads.
 	require_once __DIR__ . '/includes/activate.php';

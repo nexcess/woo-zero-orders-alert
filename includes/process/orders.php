@@ -6,22 +6,20 @@
  */
 
 // Declare our namespace.
-namespace Nexcess\WooZeroOrdersAlert\Process\OrderChecks;
+namespace Nexcess\WooZeroOrdersAlert\Process\Orders;
 
 // Set our aliases.
 use Nexcess\WooZeroOrdersAlert as Core;
-use Nexcess\WooZeroOrdersAlert\Helpers as Helpers;
 use Nexcess\WooZeroOrdersAlert\Utilities as Utilities;
 
 /**
  * Get all the orders from the previous day.
  *
- * @param  boolean $return_counts  Whether or not to return the count or the IDs.
- * @param  boolean $purge_cache    Optional to purge the cache'd version before looking up.
+ * @param  boolean $purge_cache  Optional to purge the cache'd version before looking up.
  *
  * @return mixed
  */
-function fetch_previous_day_orders( $return_counts = true, $purge_cache = false ) {
+function fetch_previous_day_orders( $purge_cache = false ) {
 
 	// Set the key to use in our transient.
 	$ky = Core\TRANSIENT_PREFIX . 'prev_day_orders';
@@ -38,10 +36,7 @@ function fetch_previous_day_orders( $return_counts = true, $purge_cache = false 
 	if ( false === $cached_dataset ) {
 
 		// Get the today timestamp.
-		$define_today_stamp = Utilities\get_today_timestamp();
-
-		// Subtract a day from today to set our starting.
-		$define_start_stamp = absint( $define_today_stamp ) - DAY_IN_SECONDS;
+		$fetch_query_stamps = Utilities\get_order_check_timestamps();
 
 		// Set the args for a specific lookup.
 		$setup_single_args  = array(
@@ -49,7 +44,7 @@ function fetch_previous_day_orders( $return_counts = true, $purge_cache = false 
 			'type'         => 'shop_order',
 			'return'       => 'ids',
 			'status'       => array( 'wc-completed' ),
-			'date_created' => $define_start_stamp . '...' . $define_today_stamp,
+			'date_created' => absint( $fetch_query_stamps['start'] ) . '...' . absint( $fetch_query_stamps['today'] ),
 		);
 
 		// Now run our lookup.
@@ -65,7 +60,7 @@ function fetch_previous_day_orders( $return_counts = true, $purge_cache = false 
 
 		// Return an actual zero or "none" if we have none.
 		if ( empty( $fetch_batch_orders ) ) {
-			return false !== $return_counts ? 'none' : 0;
+			return 'none';
 		}
 
 		// Set our transient with our data.
@@ -75,6 +70,6 @@ function fetch_previous_day_orders( $return_counts = true, $purge_cache = false 
 		$cached_dataset = $fetch_batch_orders;
 	}
 
-	// Return the entire dataset or just the counts.
-	return false !== $return_counts ? $cached_dataset : count( $cached_dataset );
+	// Return the order count.
+	return count( $cached_dataset );
 }

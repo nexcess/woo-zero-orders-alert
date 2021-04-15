@@ -1,2 +1,2 @@
-# WooCommerce Minimum Order Alerts
-Notify store owners when minimim daily order targets are missed.
+# WooCommerce Zero Orders Alert
+Notify store owners when a store has no orders for the previous day.

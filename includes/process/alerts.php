@@ -1,34 +1,38 @@
 <?php
 /**
- * Everything related to building and sending an email.
+ * Handle our different alert methods.
  *
  * @package WooZeroOrdersAlert
  */
 
 // Declare our namespace.
-namespace Nexcess\WooZeroOrdersAlert\AlertTypes\Email;
+namespace Nexcess\WooZeroOrdersAlert\Process\Alerts;
 
 // Set our aliases.
 use Nexcess\WooZeroOrdersAlert as Core;
+use Nexcess\WooZeroOrdersAlert\Utilities as Utilities;
 
 /**
- * Send the actual email.
+ * Send our zero orders notification email.
  *
  * @return mixed
  */
-function send_email_alert() {
+function send_zero_orders_email() {
+
+	// Set the timestamp.
+	$set_date_stamp = Utilities\get_yesterday_timestamp();
 
 	// Get my address.
-	$email_to_addr  = get_alert_address();
+	$email_to_addr  = get_email_to_address();
 
 	// Pull my subject.
-	$email_subject  = get_alert_subject();
+	$email_subject  = get_email_subject( $set_date_stamp );
 
 	// And pull the content.
-	$email_content  = get_alert_content();
+	$email_content  = get_email_content( $set_date_stamp );
 
 	// And finally the headers.
-	$email_headers  = get_alert_headers();
+	$email_headers  = get_email_headers();
 
 	// Now attempt to send the actual email.
 	return wp_mail( $email_to_addr, $email_subject, $email_content, $email_headers );
@@ -39,7 +43,7 @@ function send_email_alert() {
  *
  * @return string
  */
-function get_alert_address() {
+function get_email_to_address() {
 
 	// Check the Woo filter for email.
 	$maybe_use_woo  = apply_filters( Core\HOOK_PREFIX . 'alert_email_use_woo_from', false );
@@ -54,26 +58,43 @@ function get_alert_address() {
 /**
  * Construct and return our email subject.
  *
+ * @param  integer $timestamp  The timestamp of the day with no orders.
+ *
  * @return string
  */
-function get_alert_subject() {
+function get_email_subject( $timestamp = 0 ) {
+
+	// Set the date stamp.
+	$set_subj_date  = date( 'F jS', absint( $timestamp ) );
 
 	// Set up the subject using today's date.
-	$set_subject    = sprintf( __( 'Minimum Order Alert for %s', 'woo-minimum-order-alerts' ), date( 'Y-m-d' ) );
+	$set_subject    = sprintf( __( 'Zero Orders Alert for %s', 'woo-minimum-order-alerts' ), $set_subj_date );
 
 	// Return it filtered.
-	return apply_filters( Core\HOOK_PREFIX . 'alert_email_subject', $set_subject );
+	return apply_filters( Core\HOOK_PREFIX . 'alert_email_subject', $set_subject, $timestamp );
 }
 
 /**
  * Construct and return the actual email body.
  *
+ * @param  integer $timestamp  The timestamp of the day with no orders.
+ *
  * @return HTML
  */
-function get_alert_content() {
+function get_email_content( $timestamp = 0 ) {
+
+	// Set the date stamp.
+	$set_email_date = date( 'F jS', absint( $timestamp ) );
+
+	// Set up the text.
+	$message_text   = sprintf(
+		__( '%s: No orders were recorded for %s. Please confirm that your store is working properly.', 'woo-minimum-order-alerts' ),
+		'<strong>' . __( 'NOTICE', 'woo-minimum-order-alerts' ) . '</strong>', // formatted notice text.
+		esc_attr( $set_email_date ), // date of check
+	);
 
 	// First write the content.
-	$set_content    = '<p>' . __( 'Your store did not reach the minimum order count that you configured.', 'woo-minimum-order-alerts' ) . '</p>';
+	$set_content    = wpautop( $message_text );
 
 	// Build our HTML.
 	$build_html     = '';
@@ -90,7 +111,7 @@ function get_alert_content() {
 	$build_html    .= '</html>';
 
 	// Now send it back with a second filter.
-	return apply_filters( Core\HOOK_PREFIX . 'alert_email_html_content', trim( $build_html ) );
+	return apply_filters( Core\HOOK_PREFIX . 'alert_email_html_content', trim( $build_html ), $timestamp );
 }
 
 /**
@@ -98,7 +119,7 @@ function get_alert_content() {
  *
  * @return string
  */
-function get_alert_from_name() {
+function get_email_from_name() {
 
 	// Pull the blog name we have.
 	$get_site_title = get_bloginfo( 'name' );
@@ -111,11 +132,11 @@ function get_alert_from_name() {
 }
 
 /**
- * Get the site name and make it into a from name
+ * Get the address we need to mail from.
  *
  * @return string
  */
-function get_alert_from_address() {
+function get_email_from_address() {
 
 	// First pull the domain and parse it.
 	$get_site_home  = wp_parse_url( network_home_url(), PHP_URL_HOST );
@@ -137,11 +158,11 @@ function get_alert_from_address() {
  *
  * @return string
  */
-function get_alert_headers() {
+function get_email_headers() {
 
 	// Set the from name.
-	$set_from_name  = get_alert_from_name();
-	$set_from_email = get_alert_from_address();
+	$set_from_name  = get_email_from_name();
+	$set_from_email = get_email_from_address();
 
 	// Now set my headers.
 	$set_headers[]  = 'Content-Type: text/html; charset=UTF-8';

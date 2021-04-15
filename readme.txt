@@ -1,4 +1,4 @@
-=== WooCommerce Minimum Order Alerts ===
+=== Zero Orders Alert for WooCommerce ===
 Contributors: nexcess, norcross
 Tags: woocommerce,
 Requires at least: 5.2
@@ -18,7 +18,7 @@ More things about it.
 
 This section describes how to install the plugin and get it working.
 
-1. Upload `woo-minimum-order-alerts` to the `/wp-content/plugins/` directory.
+1. Upload `woo-zero-orders-alert` to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Do other stuff
 

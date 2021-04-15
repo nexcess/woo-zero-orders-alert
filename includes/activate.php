@@ -10,7 +10,6 @@ namespace Nexcess\WooZeroOrdersAlert\Activate;
 
 // Set our aliases.
 use Nexcess\WooZeroOrdersAlert as Core;
-use Nexcess\WooZeroOrdersAlert\Process\CronTasks as CronTasks;
 
 /**
  * Our inital setup function when activated.

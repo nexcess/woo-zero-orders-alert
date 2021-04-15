@@ -6,14 +6,13 @@
  */
 
 // Declare our namespace.
-namespace Nexcess\WooZeroOrdersAlert\Process\CronTasks;
+namespace Nexcess\WooZeroOrdersAlert\Process\Cron;
 
 // Set our aliases.
 use Nexcess\WooZeroOrdersAlert as Core;
-use Nexcess\WooZeroOrdersAlert\Helpers as Helpers;
 use Nexcess\WooZeroOrdersAlert\Utilities as Utilities;
-use Nexcess\WooZeroOrdersAlert\Process\OrderChecks as OrderChecks;
-use  Nexcess\WooZeroOrdersAlert\Process\Notifications as Notifications;
+use Nexcess\WooZeroOrdersAlert\Process\Orders as ProcessOrders;
+use Nexcess\WooZeroOrdersAlert\Process\Alerts as ProcessAlerts;
 
 /**
  * Start our engines.
@@ -92,12 +91,23 @@ function set_ongoing_order_check( $clear_existing = false ) {
 function run_zero_order_check() {
 
 	// First check if we need to run the check.
-	$maybe_order_check  = Helpers\maybe_run_order_check();
+	$maybe_order_check  = Utilities\maybe_run_order_check();
 
 	// Nothing to do if we don't have the check to run.
 	if ( false === $maybe_order_check ) {
 		return;
 	}
+
+	// Fetch the order count.
+	$fetch_order_count  = ProcessOrders\fetch_previous_day_orders();
+
+	// If we came back with nothing, we send the notification.
+	if ( false === $fetch_order_count || 'none' === sanitize_text_field( $fetch_order_count ) ) {
+		ProcessAlerts\send_zero_orders_email();
+	}
+
+	// Now set the last checked stamp.
+	Utilities\set_last_checked_stamp();
 
 	// And we are done here.
 	return;
