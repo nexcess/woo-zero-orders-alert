@@ -64,8 +64,11 @@ function get_email_to_address() {
  */
 function get_email_subject( $timestamp = 0 ) {
 
+	// Make sure we have a timestamp, otherwise assume yesterday.
+	$set_date_stamp = ! empty( $timestamp ) ? $timestamp : time() - DAY_IN_SECONDS;
+
 	// Set the date stamp.
-	$set_subj_date  = date( 'F jS', absint( $timestamp ) );
+	$set_subj_date  = date( 'F jS', absint( $set_date_stamp ) );
 
 	// Set up the subject using today's date.
 	$set_subject    = sprintf( __( 'Zero Orders Alert for %s', 'woo-minimum-order-alerts' ), $set_subj_date );
@@ -83,8 +86,11 @@ function get_email_subject( $timestamp = 0 ) {
  */
 function get_email_content( $timestamp = 0 ) {
 
+	// Make sure we have a timestamp, otherwise assume yesterday.
+	$set_date_stamp = ! empty( $timestamp ) ? $timestamp : time() - DAY_IN_SECONDS;
+
 	// Set the date stamp.
-	$set_email_date = date( 'F jS', absint( $timestamp ) );
+	$set_email_date = date( 'F jS', absint( $set_date_stamp ) );
 
 	// Set up the text.
 	$message_text   = sprintf(
@@ -125,7 +131,7 @@ function get_email_from_name() {
 	$get_site_title = get_bloginfo( 'name' );
 
 	// Now set the name.
-	$set_from_name  = sprintf( __( '%s Order Alerts', 'woo-minimum-order-alerts' ), $get_site_title );
+	$set_from_name  = sprintf( __( 'Order Alerts for %s', 'woo-minimum-order-alerts' ), $get_site_title );
 
 	// Return it filtered.
 	return apply_filters( Core\HOOK_PREFIX . 'alert_email_from_name', $set_from_name );
