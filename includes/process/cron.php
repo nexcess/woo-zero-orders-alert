@@ -12,7 +12,7 @@ namespace Nexcess\WooZeroOrdersAlert\Process\Cron;
 use Nexcess\WooZeroOrdersAlert as Core;
 use Nexcess\WooZeroOrdersAlert\Utilities as Utilities;
 use Nexcess\WooZeroOrdersAlert\Process\Orders as ProcessOrders;
-use Nexcess\WooZeroOrdersAlert\Process\Alerts as ProcessAlerts;
+use Nexcess\WooZeroOrdersAlert\Process\Email as ProcessEmail;
 
 /**
  * Start our engines.
@@ -105,7 +105,7 @@ function run_order_check_cron() {
 
 	// If we came back with nothing, we send the notification.
 	if ( false === $fetch_order_count || 'none' === sanitize_text_field( $fetch_order_count ) ) {
-		ProcessAlerts\send_zero_orders_email();
+		ProcessEmail\send_zero_orders_email();
 	}
 
 	// Now set the last checked stamp.

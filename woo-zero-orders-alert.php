@@ -60,8 +60,8 @@ function nx_woo_zero_orders_alert_file_load() {
 	require_once __DIR__ . '/includes/utilities.php';
 
 	// Pull in the processing parts.
-	require_once __DIR__ . '/includes/process/alerts.php';
 	require_once __DIR__ . '/includes/process/orders.php';
+	require_once __DIR__ . '/includes/process/email.php';
 	require_once __DIR__ . '/includes/process/cron.php';
 
 	// Load the triggered file loads.

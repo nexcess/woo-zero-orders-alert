@@ -1,12 +1,12 @@
 <?php
 /**
- * Handle our different alert methods.
+ * Handle sending an alert email.
  *
  * @package WooZeroOrdersAlert
  */
 
 // Declare our namespace.
-namespace Nexcess\WooZeroOrdersAlert\Process\Alerts;
+namespace Nexcess\WooZeroOrdersAlert\Process\Email;
 
 // Set our aliases.
 use Nexcess\WooZeroOrdersAlert as Core;
