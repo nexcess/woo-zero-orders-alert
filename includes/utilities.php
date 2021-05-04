@@ -89,30 +89,22 @@ function get_order_check_timestamps() {
 }
 
 /**
- * Handle setting the first "last checked" timestamp.
- *
- * @return void
- */
-function set_initial_checked_stamp() {
-
-	// Get the timestamp from yesterday.
-	$define_start_stamp = get_yesterday_timestamp();
-
-	// Set our initial options in the DB.
-	update_option( Core\OPTION_PREFIX . 'last_checked', $define_start_stamp, 'no' );
-}
-
-/**
  * Handle setting the last checked timestamp.
  *
+ * @param boolean $initial_entry  Whether this is the first time the stamp is set.
+ *
  * @return void
  */
-function set_last_checked_stamp() {
+function set_last_checked_stamp( $initial_entry = false ) {
 
-	// Get the timestamp from today.
-	$define_start_stamp = get_today_timestamp();
+	// Get the appropriate timestamp.
+	if ( false !== $initial_entry ) {
+		$define_start_stamp = get_yesterday_timestamp();
+	} else {
+		$define_start_stamp = get_today_timestamp();
+	}
 
-	// Set our initial options in the DB.
+	// Now set the timestamp in the DB.
 	update_option( Core\OPTION_PREFIX . 'last_checked', $define_start_stamp, 'no' );
 }
 

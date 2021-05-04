@@ -27,7 +27,7 @@ function activate() {
 	ProcessCron\set_ongoing_order_check( true );
 
 	// And set the last checked stamp.
-	Utilities\set_initial_checked_stamp();
+	Utilities\set_last_checked_stamp( true );
 
 	// Include our action so that we may add to this later.
 	do_action( Core\HOOK_PREFIX . 'activate_process' );
