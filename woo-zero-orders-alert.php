@@ -3,7 +3,7 @@
  * Plugin Name: Zero Orders Alert for WooCommerce
  * Plugin URI:  https://www.nexcess.net
  * Description: Notify store owners when a store has zero sales for a day.
- * Version:     1.0.0
+ * Version:     1.0.1-dev
  * Author:      Nexcess
  * Author URI:  https://www.nexcess.net
  * Text Domain: woo-zero-orders-alert
@@ -23,7 +23,7 @@ namespace Nexcess\WooZeroOrdersAlert;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define our plugin version.
-define( __NAMESPACE__ . '\VERS', '1.0.0' );
+define( __NAMESPACE__ . '\VERS', '1.0.1-dev' );
 
 // Plugin root file.
 define( __NAMESPACE__ . '\FILE', __FILE__ );
