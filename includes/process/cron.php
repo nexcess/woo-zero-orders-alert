@@ -39,7 +39,7 @@ function add_custom_cron_schedule( $schedules ) {
 		// Add our new one.
 		$schedules['eighthours'] = array(
 			'interval' => absint( $set_custom_intval ),
-			'display'  => __( 'Every 8 Hours', 'woo-minimum-order-alerts' ),
+			'display'  => __( 'Every 8 Hours', 'woo-zero-orders-alert' ),
 		);
 	}
 

@@ -71,7 +71,7 @@ function get_email_subject( $timestamp = 0 ) {
 	$set_subj_date  = date( 'F jS', absint( $set_date_stamp ) );
 
 	// Set up the subject using today's date.
-	$set_subject    = sprintf( __( 'Zero Orders Alert for %s', 'woo-minimum-order-alerts' ), $set_subj_date );
+	$set_subject    = sprintf( __( 'Zero Orders Alert for %s', 'woo-zero-orders-alert' ), $set_subj_date );
 
 	// Return it filtered.
 	return apply_filters( Core\HOOK_PREFIX . 'alert_email_subject', $set_subject, $timestamp );
@@ -94,8 +94,8 @@ function get_email_content( $timestamp = 0 ) {
 
 	// Set up the text.
 	$message_text   = sprintf(
-		__( '%s: No orders were recorded for %s. Please confirm that your store is working properly.', 'woo-minimum-order-alerts' ),
-		'<strong>' . __( 'NOTICE', 'woo-minimum-order-alerts' ) . '</strong>', // formatted notice text.
+		__( '%s: No orders were recorded for %s. Please confirm that your store is working properly.', 'woo-zero-orders-alert' ),
+		'<strong>' . __( 'NOTICE', 'woo-zero-orders-alert' ) . '</strong>', // formatted notice text.
 		esc_attr( $set_email_date ), // date of check
 	);
 
@@ -131,7 +131,7 @@ function get_email_from_name() {
 	$get_site_title = get_bloginfo( 'name' );
 
 	// Now set the name.
-	$set_from_name  = sprintf( __( 'Order Alerts for %s', 'woo-minimum-order-alerts' ), $get_site_title );
+	$set_from_name  = sprintf( __( 'Order Alerts for %s', 'woo-zero-orders-alert' ), $get_site_title );
 
 	// Return it filtered.
 	return apply_filters( Core\HOOK_PREFIX . 'alert_email_from_name', $set_from_name );
@@ -170,9 +170,14 @@ function get_email_headers() {
 	$set_from_name  = get_email_from_name();
 	$set_from_email = get_email_from_address();
 
+	// Now build the reply.
+	$parse_to_addr  = explode( '@', $set_from_email );
+	$set_from_reply = array_pop( $parse_to_addr );
+
 	// Now set my headers.
 	$set_headers[]  = 'Content-Type: text/html; charset=UTF-8';
-	$set_headers[]  = sprintf( __( 'From: %1$s <%2$s>', 'woo-minimum-order-alerts' ), esc_attr( $set_from_name ), $set_from_email );
+	$set_headers[]  = sprintf( __( 'From: %1$s <%2$s>', 'woo-zero-orders-alert' ), esc_attr( $set_from_name ), $set_from_email );
+	$set_headers[]  = sprintf( 'Reply-To: %1$s <%2$s>', __( 'no reply', 'woo-zero-orders-alert' ), 'no-reply@' . $set_from_reply );
 
 	// Return it filtered.
 	return apply_filters( Core\HOOK_PREFIX . 'alert_email_headers', $set_headers );
