@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Zero Orders Alert for WooCommerce
- * Plugin URI:  https://www.nexcess.net
+ * Plugin URI:  https://github.com/nexcess/woo-zero-orders-alert
  * Description: Notify store owners when a store has zero sales for a day.
  * Version:     1.0.1-dev
  * Author:      Nexcess
